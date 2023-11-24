@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Ativo extends Model
+{
+    use HasFactory, SoftDeletes;
+    protected $fillable = [
+        'id',
+        'Ticket',
+        'Razao_Social',
+        'CNPJ',
+        'Valor_mercado',
+        'Valor_patrimonio',
+        'qtd_cotas',
+        'Valor_PCota',
+        'Tipo',
+        'Segmento',
+        'status'
+        ];
+        protected function valor_mercado(): Attribute{
+            return Attribute::make(
+                get: fn ($value) => str_replace(".", ",", $value),
+                set: fn ( $value) =>
+                    [
+                        'valor_mercado' => str_replace(",", ".", str_replace(".", "", $value)),
+                    ],
+                );
+        }
+        protected function valor_patrimonio(): Attribute{
+            return Attribute::make(
+                get: fn ($value) => str_replace(".", ",", $value),
+                set: fn ( $value) =>
+                    [
+                        'valor_patrimonio' => str_replace(",", ".", str_replace(".", "", $value)),
+                    ],
+                );
+        }
+        protected function valor_PCota(): Attribute{
+            return Attribute::make(
+                get: fn ($value) => str_replace(".", ",", $value),
+                set: fn ( $value) =>
+                    [
+                        'valor_PCota`' => str_replace(",", ".", str_replace(".", "", $value)),
+                    ],
+                );
+        }
+
+}
