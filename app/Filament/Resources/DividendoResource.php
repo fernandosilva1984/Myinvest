@@ -13,14 +13,9 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-use Carbon\Carbon;
-use Closure;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Grouping\Group;
-
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -40,7 +35,7 @@ class DividendoResource extends Resource
                 ->label('Ativo')
                 ->required(false)
                 ->searchable()
-                ->autofocus()
+                
                 ->options((
                     Ativo::all()->pluck('Ticket','id')->toArray()
                 )),
@@ -56,15 +51,15 @@ class DividendoResource extends Resource
                     ->label('Data de Pagamento')
                     ->required(),
                 Forms\Components\TextInput::make('valor_dividendo')
-                ->label('Dividendo')
+                    ->label('Dividendo')
                     ->required()
                     ->prefix('R$')
                     ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
                 Forms\Components\TextInput::make('valor_jcp')
-                ->label('JCP')
-                ->prefix('R$')
-                ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
-                ->reactive(),
+                    ->label('JCP')
+                    ->prefix('R$')
+                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
+                    ->reactive(),
                 Forms\Components\TextInput::make('valor_total')
                     
                     ->disabled()
@@ -93,8 +88,8 @@ class DividendoResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_ref')
-                ->label('Mês Ref')
-                ->searchable()
+                    ->label('Mês Ref')
+                    ->searchable()
                     ->date($format = 'F/Y')
                     ->sortable(),
                     Tables\Columns\TextColumn::make('data_com')
@@ -102,18 +97,18 @@ class DividendoResource extends Resource
                     ->date($format = 'j/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_pag')
-                ->label('Data Pag')
-                ->date($format = 'j/m/Y')
+                    ->label('Data Pag')
+                    ->date($format = 'j/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('valor_dividendo')
-                ->label('Dividendo')
-                ->money('brl'),
+                    ->label('Dividendo')
+                    ->money('brl'),
                 Tables\Columns\TextColumn::make('valor_jcp')
-                ->label('JCP')    
-                ->money('brl'),
+                    ->label('JCP')    
+                    ->money('brl'),
                 Tables\Columns\TextColumn::make('valor_total')
-                ->label('Total')    
-                ->money('brl'),
+                    ->label('Total')    
+                    ->money('brl'),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()

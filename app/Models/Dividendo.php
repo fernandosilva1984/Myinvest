@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+//use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Dividendo extends Model
 {
@@ -26,7 +26,7 @@ class Dividendo extends Model
     {
         return $this->hasOne(Ativo::class,  'id','id_ativo');
     }
-    protected function valor_dividendo(): Attribute{
+   /* protected function valor_dividendo(): Attribute{
         return Attribute::make(
             get: fn ($value) => str_replace(".", ",", $value),
             set: fn ( $value) =>
@@ -53,5 +53,5 @@ class Dividendo extends Model
                     'valor_total' => str_replace(",", ".", str_replace(".", "", $value)),
                 ],
             );
-    }
+    }*/
 }

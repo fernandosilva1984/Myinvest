@@ -32,7 +32,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-      //  $table->dropForeign('id_ativo');
+      
         Schema::dropIfExists('dividendos');
     }
 };
