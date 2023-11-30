@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
             CarteiraTableSeeder::class,
             AtivoTableSeeder::class,
-            
+            DividendoTableSeeder::class,
         ]);
     }
 }
