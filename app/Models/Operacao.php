@@ -22,11 +22,11 @@ class Operacao extends Model
         ];
         public function carteira()
     {
-        return $this->hasOne(carteira::class,  'id','id_carteira');
+        return $this->hasOne(Carteira::class,  'id','id_carteira');
     }
     public function ativo()
     {
-        return $this->hasOne(ativo::class,  'id','id_ativo');
+        return $this->hasOne(Ativo::class,  'id','id_ativo');
     }
     protected function valor_unitario(): Attribute{
         return Attribute::make(

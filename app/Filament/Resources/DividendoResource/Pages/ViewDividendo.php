@@ -4,17 +4,16 @@ namespace App\Filament\Resources\DividendoResource\Pages;
 
 use App\Filament\Resources\DividendoResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class EditDividendo extends EditRecord
+class ViewDividendo extends ViewRecord
 {
     protected static string $resource = DividendoResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            Actions\EditAction::make(),
         ];
     }
 }
