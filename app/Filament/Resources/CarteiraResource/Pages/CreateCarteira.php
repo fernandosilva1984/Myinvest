@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateCarteira extends CreateRecord
 {
     protected static string $resource = CarteiraResource::class;
+    protected static ?string $title = 'Nova Carteira';
 }

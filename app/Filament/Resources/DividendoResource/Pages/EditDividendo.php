@@ -9,6 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditDividendo extends EditRecord
 {
     protected static string $resource = DividendoResource::class;
+    protected static ?string $title = 'Editar Dividendo';
 
     protected function getHeaderActions(): array
     {

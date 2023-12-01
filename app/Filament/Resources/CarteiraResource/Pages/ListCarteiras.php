@@ -9,11 +9,13 @@ use Filament\Resources\Pages\ListRecords;
 class ListCarteiras extends ListRecords
 {
     protected static string $resource = CarteiraResource::class;
+    protected static ?string $title = 'Carteiras';
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Nova Carteira'),
         ];
     }
 }

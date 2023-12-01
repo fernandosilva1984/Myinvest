@@ -9,11 +9,13 @@ use Filament\Resources\Pages\ListRecords;
 class ListAtivos extends ListRecords
 {
     protected static string $resource = AtivoResource::class;
+    protected static ?string $title = 'Ativos';
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Novo Ativo'),
         ];
     }
 }

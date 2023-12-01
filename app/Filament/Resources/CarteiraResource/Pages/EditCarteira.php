@@ -9,6 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditCarteira extends EditRecord
 {
     protected static string $resource = CarteiraResource::class;
+    protected static ?string $title = 'Editar Carteira';
 
     protected function getHeaderActions(): array
     {

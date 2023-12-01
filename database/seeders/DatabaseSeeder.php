@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             CarteiraTableSeeder::class,
             AtivoTableSeeder::class,
             DividendoTableSeeder::class,
+            OperacaoTableSeeder::class,
+            MovimentacaoTableSeeder::class,
         ]);
     }
 }

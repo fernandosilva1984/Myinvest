@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewAtivo extends ViewRecord
 {
     protected static string $resource = AtivoResource::class;
+    protected static ?string $title = 'Visualizar Ativo';
 
     protected function getHeaderActions(): array
     {

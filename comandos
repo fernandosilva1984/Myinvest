@@ -1,3 +1,5 @@
+======================= COMANDOS LARAVEL =========================
+
 composer update
 
 php artisan serve 
@@ -5,5 +7,12 @@ php artisan serve
 php artisan migrate:refresh --seed
 
 npm run dev
+
+// Criar model com migration
+
+php artisan make:model Movimentacao -m
+
+
+==================== COMANDOS FILAMENT ===============================
 
 php artisan make:filament-resource OperacaoResource --generate --view

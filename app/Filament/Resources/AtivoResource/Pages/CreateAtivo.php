@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAtivo extends CreateRecord
 {
     protected static string $resource = AtivoResource::class;
+    protected static ?string $title = 'Novo Ativo';
 }

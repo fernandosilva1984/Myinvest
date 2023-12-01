@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewDividendo extends ViewRecord
 {
     protected static string $resource = DividendoResource::class;
+    protected static ?string $title = 'Visualizar Dividendo';
 
     protected function getHeaderActions(): array
     {

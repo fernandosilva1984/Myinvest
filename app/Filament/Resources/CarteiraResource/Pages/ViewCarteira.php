@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewCarteira extends ViewRecord
 {
     protected static string $resource = CarteiraResource::class;
+    protected static ?string $title = 'Visualizar Carteira';
 
     protected function getHeaderActions(): array
     {

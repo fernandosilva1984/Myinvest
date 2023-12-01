@@ -9,6 +9,8 @@ use Filament\Resources\Pages\EditRecord;
 class EditOperacao extends EditRecord
 {
     protected static string $resource = OperacaoResource::class;
+    protected static ?string $title = 'Editar Operação';
+
 
     protected function getHeaderActions(): array
     {

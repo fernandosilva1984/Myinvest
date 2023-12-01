@@ -23,7 +23,7 @@ class DividendoResource extends Resource
 {
     protected static ?string $model = Dividendo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationLabel = 'Dividendos';
 
 

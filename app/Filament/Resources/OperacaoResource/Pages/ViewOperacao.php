@@ -9,6 +9,8 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewOperacao extends ViewRecord
 {
     protected static string $resource = OperacaoResource::class;
+    protected static ?string $title = 'Visualizar Operação';
+
 
     protected function getHeaderActions(): array
     {
