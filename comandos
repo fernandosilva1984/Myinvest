@@ -1,17 +1,20 @@
 ======================= COMANDOS LARAVEL =========================
-
+// Atualizar os pacotes
 composer update
 
+//iniciar o servidor artisan
 php artisan serve 
 
+//atualizar as migrations com os seeders
 php artisan migrate:refresh --seed
 
+// iniciar o npm
 npm run dev
 
 // Criar model com migration
-
 php artisan make:model Movimentacao -m
 
+php artisan lang:publish
 
 ==================== COMANDOS FILAMENT ===============================
 
