@@ -35,7 +35,6 @@ class DividendoResource extends Resource
                 ->label('Ativo')
                 ->required(false)
                 ->searchable()
-                
                 ->options((
                     Ativo::all()->pluck('Ticket','id')->toArray()
                 )),
@@ -75,7 +74,7 @@ class DividendoResource extends Resource
     {
         return $table
         ->striped()
-        ->defaultSort('id','desc')
+        ->defaultSort('data_ref','desc')
             ->groups([
                 Group::make('ativo.Ticket')
                 ->label('Ativo')

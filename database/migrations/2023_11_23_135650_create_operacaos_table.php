@@ -13,7 +13,18 @@ return new class extends Migration
     {
         Schema::create('operacaos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_carteira');
+            $table->unsignedBigInteger('id_ativo');
+            $table->date('data');
+            $table->integer('qtd')->nullable();
+            $table->decimal('valor_unitario', 15,2)->nullable();
+            $table->decimal('valor_total',15,2)->storedAs('qtd * valor_unitario')->nullable();
+            $table->string('tipo');
+            $table->boolean('status')->default(TRUE);
+            $table->softDeletes();
             $table->timestamps();
+            $table->foreign('id_carteira')->references('id')->on('carteiras');
+            $table->foreign('id_ativo')->references('id')->on('ativos');
         });
     }
 
