@@ -22,6 +22,7 @@ class DividendoTableSeeder extends Seeder
         'valor_jcp'=> '0.15',
         'data_com'=> '2023-11-30',
         'data_pag'=> '2023-12-15',
+        'obs'=>'sem observação',
         ]);
         Dividendo::create([
             'id_ativo'=> '1',

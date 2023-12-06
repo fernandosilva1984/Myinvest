@@ -9,5 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateDividendo extends CreateRecord
 {
     protected static string $resource = DividendoResource::class;
-    protected static ?string $title = 'Novo Dividendo';
+    protected static ?string $title = 'Novo Provento';
 }

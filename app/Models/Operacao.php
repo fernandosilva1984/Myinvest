@@ -18,6 +18,7 @@ class Operacao extends Model
         'valor_unitario',
         'valor_total',
         'tipo',
+        'obs',
         'status'
         ];
         public function carteira()

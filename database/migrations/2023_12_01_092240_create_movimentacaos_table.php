@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('data')->nullable();
             $table->decimal('valor_total',15,2)->nullable();
             $table->string('tipo');
+            $table->string('obs')->nullable();
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
             $table->timestamps();

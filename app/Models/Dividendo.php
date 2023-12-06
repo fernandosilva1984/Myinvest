@@ -19,6 +19,7 @@ class Dividendo extends Model
         'valor_total',
         'data_com',
         'data_pag',
+        'obs',
         'status'
         ];
         

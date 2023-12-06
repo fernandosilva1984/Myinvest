@@ -19,6 +19,7 @@ class MovimentacaoTableSeeder extends Seeder
             'id_carteira'=> '1',
             'data'=> '2023-10-01',
             'valor_total'=> '150.00',
+            'obs'=>'sem observação',
             'tipo' => 'A',
         ]);
         Movimentacao::create([

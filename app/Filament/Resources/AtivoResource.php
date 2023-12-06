@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Grid;
 
 class AtivoResource extends Resource
 {
@@ -24,13 +25,16 @@ class AtivoResource extends Resource
     {
         return $form
             ->schema([
+                Grid::make()
+                
+                ->schema([
                 Forms\Components\TextInput::make('Ticket')
                    ->required()
-                   
-                    ->maxLength(255),
+                   ->columnSpan(1)
+                   ->maxLength(255),
                 Forms\Components\TextInput::make('Razao_Social')
                     ->label(label: 'Razão Social')
-                   
+                    ->columnSpan(3)
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('CNPJ')
@@ -69,6 +73,8 @@ class AtivoResource extends Resource
                     ->required(),
                 Forms\Components\Toggle::make('status')
                     ->required(),
+                ])
+                ->columns(4)
             ]);
     }
 
@@ -96,18 +102,7 @@ class AtivoResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('Segmento')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+               
             ])
            
         ->filters([

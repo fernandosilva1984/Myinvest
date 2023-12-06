@@ -15,6 +15,7 @@ class Movimentacao extends Model
         'data',
         'valor_total',
         'tipo',
+        'obs',
         'status'
         ];
         public function carteira()

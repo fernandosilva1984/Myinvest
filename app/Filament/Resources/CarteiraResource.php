@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Grid;
 
 class CarteiraResource extends Resource
 {
@@ -23,13 +24,19 @@ class CarteiraResource extends Resource
     {
         return $form
             ->schema([
+                Grid::make()
+                
+                ->schema([
                 Forms\Components\TextInput::make('Nome')
                 ->label(label: 'Carteira')
                 ->required()
+                ->columnSpan(1)
                 ->maxLength(255),
                 Forms\Components\TextInput::make('Proprietario')
                 ->label(label: 'Proprietário')
                 ->required()
+                ->columnSpan(2)
+                
                 ->maxLength(255),
                 Forms\Components\TextInput::make('Valor_Investido')
                 ->label(label: 'Valor investido')
@@ -45,8 +52,9 @@ class CarteiraResource extends Resource
                 ->suffix('%')
                     ->required()
                     ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
-                Forms\Components\Toggle::make('status')
-                    ->required(),
+               
+                ])
+                ->columns(3)
             ]);
     }
 
@@ -69,18 +77,6 @@ class CarteiraResource extends Resource
                 ->label(label: 'Valor de mercado'),
                 Tables\Columns\TextColumn::make('Resultado')
                 ->numeric(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

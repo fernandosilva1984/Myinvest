@@ -21,6 +21,7 @@ class OperacaoTableSeeder extends Seeder
             'data'=> '2023-10-01',
             'qtd' => '5',
             'valor_unitario'=> '10.00',
+            'obs'=>'sem observação',
             'tipo' => 'C',
         ]);
         Operacao::create([

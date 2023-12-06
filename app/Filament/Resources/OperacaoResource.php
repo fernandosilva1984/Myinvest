@@ -17,6 +17,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Grouping\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Grid;
 
 class OperacaoResource extends Resource
 {
@@ -29,41 +30,52 @@ class OperacaoResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('id_carteira')
-                    ->label('Carteira')
-                    ->required()
-                    ->searchable()
-                    ->options((
-                    Carteira::all()->pluck('Nome','id')->toArray()
-                )),
-                Forms\Components\Select::make('id_ativo')
-                    ->label('Ativo')
-                    ->required()
-                    ->searchable()
-                    ->options((
-                        Ativo::all()->pluck('Ticket','id')->toArray()
-                    )),
-                Forms\Components\DatePicker::make('data')
-                    ->label('Data')
-                    ->required(),
-                Forms\Components\TextInput::make('qtd')
-                    ->label('Quantidade')
-                    ->numeric(),
-                Forms\Components\TextInput::make('valor_unitario')
-                    ->label('Valor Unitário')
-                    ->prefix('R$')
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
-                Forms\Components\TextInput::make('valor_total')
-                    ->label('Valor Total')
-                    ->prefix('R$')
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)                      
-                    ->disabled(),
-                Forms\Components\Radio::make('tipo')
-                    ->inline()
-                    ->options([
-                        'C' => 'Compra',
-                        'V' => 'Venda',
-                    ]),
+                
+                Grid::make()
+                
+                ->schema([
+                    Forms\Components\Select::make('id_carteira')
+                        ->label('Carteira')
+                        ->required()
+                        ->searchable()
+                        ->options((
+                        Carteira::all()->sortBy('Nome')->pluck('Nome','id')->toArray()
+                        )),
+                    Forms\Components\Select::make('id_ativo')
+                        ->label('Ativo')
+                        ->required()
+                        ->searchable()
+                        ->options((
+                        Ativo::all()->sortBy('Ticket')->pluck('Ticket','id')->toArray()
+                        )),
+                    Forms\Components\DatePicker::make('data')
+                        ->label('Data')
+                        ->required(),
+                   Forms\Components\TextInput::make('qtd')
+                        ->label('Quantidade')
+                        ->numeric(),
+                    Forms\Components\TextInput::make('valor_unitario')
+                        ->label('Valor Unitário')
+                        ->prefix('R$')
+                        ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
+                    Forms\Components\TextInput::make('valor_total')
+                        ->label('Valor Total')
+                        ->prefix('R$')
+                        ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)                      
+                        ->disabled(),
+                    Forms\Components\Radio::make('tipo')
+                        ->inline()
+                        ->default('C')
+                        ->options([
+                            'C' => 'Compra',
+                            'V' => 'Venda',
+                        ]),
+                   
+                ])                
+                ->columns(3),
+                Forms\Components\TextInput::make('obs')
+                ->label('Observação')
+                ->columnSpan(3),
             ]);
     }
 
@@ -87,7 +99,7 @@ class OperacaoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('data')
                     ->label('Data')
-                    ->date($format = 'j/m/Y')
+                    ->date($format = 'd/m/y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('carteira.Nome')
                     ->numeric()
@@ -113,18 +125,7 @@ class OperacaoResource extends Resource
                         'C' => 'success',
                         'V' => 'danger',
                     }),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+               
             ])
             ->filters([
                 //

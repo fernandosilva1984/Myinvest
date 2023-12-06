@@ -33,7 +33,7 @@ class MovimentacaoResource extends Resource
                     ->required()
                     ->searchable()
                     ->options((
-                    Carteira::all()->pluck('Nome','id')->toArray()
+                    Carteira::all()->sortBy('Nome')->pluck('Nome','id')->toArray()
                 )),
                 Forms\Components\DatePicker::make('data')
                     ->label('Data')
@@ -43,11 +43,15 @@ class MovimentacaoResource extends Resource
                     ->prefix('R$')
                     ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
                 Forms\Components\Radio::make('tipo')
-                    
+                    ->required()
+                    ->default('A')
                     ->options([
                         'A' => 'Aporte',
                         'S' => 'Saque',
                 ]),
+                Forms\Components\TextInput::make('obs')
+                    ->label('Observação')
+                    ->columnSpan(2),
             ]);
     }
 
@@ -68,7 +72,7 @@ class MovimentacaoResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data')
-                    ->date($format = 'j/m/Y')
+                    ->date($format = 'd/m/y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('valor_total')
                     ->Label('Valor')
@@ -81,18 +85,6 @@ class MovimentacaoResource extends Resource
                     'S' => 'danger',
                 }),
                 
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

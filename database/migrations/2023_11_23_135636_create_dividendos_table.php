@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('valor_total',15,2)->storedAs('valor_dividendo + valor_jcp')->nullable();
             $table->date('data_com');
             $table->date('data_pag');
+            $table->string('obs')->nullable();
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
             $table->timestamps();

@@ -18,25 +18,29 @@ use Filament\Tables\Table;
 use Filament\Tables\Grouping\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Grid;
 
 class DividendoResource extends Resource
 {
     protected static ?string $model = Dividendo::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
-    protected static ?string $navigationLabel = 'Dividendos';
+    protected static ?string $navigationLabel = 'Proventos';
 
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Grid::make()
+                
+                ->schema([
                 Forms\Components\Select::make('id_ativo')
                 ->label('Ativo')
                 ->required(false)
                 ->searchable()
                 ->options((
-                    Ativo::all()->pluck('Ticket','id')->toArray()
+                    Ativo::all()->sortBy('Ticket')->pluck('Ticket','id')->toArray()
                 )),
                 Forms\Components\DatePicker::make('data_ref')
                // ->native(false)
@@ -66,7 +70,11 @@ class DividendoResource extends Resource
                     ->prefix('R$')
              
                 ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
-              
+                Forms\Components\TextInput::make('obs')
+                    ->label('Observação')
+                    ->columnSpan(3),
+            ])
+            ->columns(3),
             ]);
     }
 
@@ -93,11 +101,11 @@ class DividendoResource extends Resource
                     ->sortable(),
                     Tables\Columns\TextColumn::make('data_com')
                     ->label('Data Com')
-                    ->date($format = 'j/m/Y')
+                    ->date($format = 'd/m/y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_pag')
                     ->label('Data Pag')
-                    ->date($format = 'j/m/Y')
+                    ->date($format = 'd/m/y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('valor_dividendo')
                     ->label('Dividendo')
@@ -108,18 +116,7 @@ class DividendoResource extends Resource
                 Tables\Columns\TextColumn::make('valor_total')
                     ->label('Total')    
                     ->money('brl'),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+               
             ])
             ->filters([
                 //
