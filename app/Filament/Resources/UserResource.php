@@ -63,9 +63,15 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()
+                ->label('')
+                ->tooltip('Visualizar'),
+                Tables\Actions\EditAction::make()
+                ->label('')
+                ->tooltip('Editar'),
+                Tables\Actions\DeleteAction::make()
+                ->label('')
+                ->tooltip('Excluir'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

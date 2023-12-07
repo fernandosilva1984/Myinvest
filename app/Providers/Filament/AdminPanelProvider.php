@@ -35,8 +35,10 @@ class AdminPanelProvider extends PanelProvider
             ->profile()
             ->sidebarCollapsibleOnDesktop()
             ->colors([
-                'primary' => Color::Green,
+                'primary' => Color::hex('#014bde'),
             ])
+            ->font('Nunito')
+            //->brandLogo(url('/img/icon.png'))
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
