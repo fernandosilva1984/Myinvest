@@ -23,7 +23,7 @@ use Filament\Forms\Components\Grid;
 class DividendoResource extends Resource
 {
     protected static ?string $model = Dividendo::class;
-
+    protected static ?string $navigationGroup = 'Cadastro';
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationLabel = 'Proventos';
 

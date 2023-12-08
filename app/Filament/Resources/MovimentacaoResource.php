@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class MovimentacaoResource extends Resource
 {
     protected static ?string $model = Movimentacao::class;
+    protected static ?string $navigationGroup = 'Relatórios';
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-path-rounded-square';
     protected static ?string $navigationLabel = 'Movimentações';
@@ -27,7 +28,7 @@ class MovimentacaoResource extends Resource
     {
         return $form
             ->schema([
-                
+
                 Forms\Components\Select::make('id_carteira')
                     ->label('Carteira')
                     ->required()
@@ -84,7 +85,7 @@ class MovimentacaoResource extends Resource
                     'A' => 'success',
                     'S' => 'danger',
                 }),
-                
+
             ])
             ->filters([
                 //

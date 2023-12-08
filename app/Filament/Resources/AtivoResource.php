@@ -18,6 +18,8 @@ use Filament\Forms\Components\Grid;
 class AtivoResource extends Resource
 {
     protected static ?string $model = Ativo::class;
+    protected static ?string $navigationGroup = 'Cadastro';
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
 
@@ -26,7 +28,7 @@ class AtivoResource extends Resource
         return $form
             ->schema([
                 Grid::make()
-                
+
                 ->schema([
                 Forms\Components\TextInput::make('Ticket')
                    ->required()
@@ -102,9 +104,9 @@ class AtivoResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('Segmento')
                     ->searchable(),
-               
+
             ])
-           
+
         ->filters([
                 //
             ])

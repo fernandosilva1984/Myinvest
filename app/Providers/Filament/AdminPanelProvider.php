@@ -19,6 +19,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationGroup;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -60,6 +61,17 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                ->label('Cadastro')
+                //->icon('heroicon-o-plus-circle')
+                ->collapsed(),
+                //->collapsible(),
+                //->sidebarCollapsibleOnDesktop(),
+                NavigationGroup::make()
+                ->label('Relatórios')
+                //->icon('heroicon-o-shopping-cart'),
             ])
             ->authMiddleware([
                 Authenticate::class,

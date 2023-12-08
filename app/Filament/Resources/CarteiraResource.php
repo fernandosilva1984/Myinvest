@@ -18,6 +18,7 @@ use Filament\Forms\Components\Grid;
 class CarteiraResource extends Resource
 {
     protected static ?string $model = Carteira::class;
+    protected static ?string $navigationGroup = 'Cadastro';
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 

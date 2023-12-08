@@ -22,6 +22,7 @@ use Filament\Forms\Components\Grid;
 class OperacaoResource extends Resource
 {
     protected static ?string $model = Operacao::class;
+    protected static ?string $navigationGroup = 'Cadastro';
 
     protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
     protected static ?string $navigationLabel = 'Operações';
