@@ -14,6 +14,9 @@
     @apply bg-gradient-to-b dark:from-gray-950 dark:to-gray-800 from-primary-600 via-primary-500 to-sky-600 dark:bg-transparent;
 }
 
+.fi-topbar-item {
+    @apply bg-gradient-to-b dark:from-gray-950 dark:to-gray-800 from-primary-600 via-primary-500 to-sky-600 dark:bg-transparent;
+}
 .fi-sidebar-group div span {
     @apply text-white;
 }

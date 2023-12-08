@@ -73,6 +73,8 @@ class AdminPanelProvider extends PanelProvider
                 ->label('Relatórios')
                 //->icon('heroicon-o-shopping-cart'),
             ])
+           // adicionar o menu no top do site
+            //->topNavigation()
             ->authMiddleware([
                 Authenticate::class,
             ])
