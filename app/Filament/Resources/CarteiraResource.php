@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CarteiraResource\Pages;
 use App\Filament\Resources\CarteiraResource\RelationManagers;
 use App\Models\Carteira;
+use App\Models\Movimentacao;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
