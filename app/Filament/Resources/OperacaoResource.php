@@ -22,8 +22,8 @@ use Filament\Forms\Components\Grid;
 class OperacaoResource extends Resource
 {
     protected static ?string $model = Operacao::class;
-    protected static ?string $navigationGroup = 'Cadastro';
-
+    protected static ?string $navigationGroup = 'Cadastros';
+    protected static ?int $navigationSort = 4;
     protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
     protected static ?string $navigationLabel = 'Operações';
 
@@ -31,9 +31,9 @@ class OperacaoResource extends Resource
     {
         return $form
             ->schema([
-                
+
                 Grid::make()
-                
+
                 ->schema([
                     Forms\Components\Select::make('id_carteira')
                         ->label('Carteira')
@@ -62,7 +62,7 @@ class OperacaoResource extends Resource
                     Forms\Components\TextInput::make('valor_total')
                         ->label('Valor Total')
                         ->prefix('R$')
-                        ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)                      
+                        ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
                         ->disabled(),
                     Forms\Components\Radio::make('tipo')
                         ->inline()
@@ -71,8 +71,8 @@ class OperacaoResource extends Resource
                             'C' => 'Compra',
                             'V' => 'Venda',
                         ]),
-                   
-                ])                
+
+                ])
                 ->columns(3),
                 Forms\Components\TextInput::make('obs')
                 ->label('Observação')
@@ -115,10 +115,10 @@ class OperacaoResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('valor_unitario')
-                    ->label('V. Unitário')    
+                    ->label('V. Unitário')
                     ->money('brl'),
                 Tables\Columns\TextColumn::make('valor_total')
-                    ->label('V. Total')    
+                    ->label('V. Total')
                  ->money('brl'),
                 Tables\Columns\TextColumn::make('tipo')
                     ->badge()
@@ -126,7 +126,7 @@ class OperacaoResource extends Resource
                         'C' => 'success',
                         'V' => 'danger',
                     }),
-               
+
             ])
             ->filters([
                 //

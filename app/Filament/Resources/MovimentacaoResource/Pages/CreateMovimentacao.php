@@ -12,20 +12,24 @@ class CreateMovimentacao extends CreateRecord
     protected static string $resource = MovimentacaoResource::class;
     protected static ?string $title = 'Nova Movimentação';
 
-    protected function afterCreate(): void
+    protected function beforeFormFilled(): void
     {
-        if ($this->record->tipo == 'A'){
-            $carteira = Carteira::find($this->record->id_carteira);
-            $carteira->Valor_Investido += $this->record->valor_total;
-            $carteira->save();   
+        if ($this->record->tipo == 'S'){
+          //  $carteira = Carteira::find($this->record->id_carteira);
+          //  $carteira->Valor_Investido += $this->record->valor_total;
+          //  $carteira->save();
+          //
+          $this->record->valor_total -= "";
+          //$this->save();
         }
         else
-        {   
-            $carteira = Carteira::find($this->record->id_carteira);
-            $carteira->Valor_Investido -= $this->record->valor_total;
-            $carteira->save();   
+        {
+          //  $carteira = Carteira::find($this->record->id_carteira);
+          //  $carteira->Valor_Investido -= $this->record->valor_total;
+          //  $carteira->save();
+          $this->record->valor_total == $this->record->valor_total ;
         }
-    
+
     }
 }
 

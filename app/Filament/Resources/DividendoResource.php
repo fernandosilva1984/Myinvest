@@ -23,7 +23,8 @@ use Filament\Forms\Components\Grid;
 class DividendoResource extends Resource
 {
     protected static ?string $model = Dividendo::class;
-    protected static ?string $navigationGroup = 'Cadastro';
+    protected static ?string $navigationGroup = 'Cadastros';
+    protected static ?int $navigationSort = 5;
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationLabel = 'Proventos';
 
@@ -33,7 +34,7 @@ class DividendoResource extends Resource
         return $form
             ->schema([
                 Grid::make()
-                
+
                 ->schema([
                 Forms\Components\Select::make('id_ativo')
                 ->label('Ativo')
@@ -64,11 +65,11 @@ class DividendoResource extends Resource
                     ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
                     ->reactive(),
                 Forms\Components\TextInput::make('valor_total')
-                    
+
                     ->disabled()
-                    
+
                     ->prefix('R$')
-             
+
                 ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
                 Forms\Components\TextInput::make('obs')
                     ->label('Observação')
@@ -111,12 +112,12 @@ class DividendoResource extends Resource
                     ->label('Dividendo')
                     ->money('brl'),
                 Tables\Columns\TextColumn::make('valor_jcp')
-                    ->label('JCP')    
+                    ->label('JCP')
                     ->money('brl'),
                 Tables\Columns\TextColumn::make('valor_total')
-                    ->label('Total')    
+                    ->label('Total')
                     ->money('brl'),
-               
+
             ])
             ->filters([
                 //

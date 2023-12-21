@@ -18,17 +18,13 @@ class CarteiraTableSeeder extends Seeder
         Carteira::create([
             'Nome'=>'Marina',
             'Proprietario'=>'Marina Júlia',
-            'Valor_Investido'=>'8971.72',
-            'Valor_Mercado'=>'7933.22',
-            'Resultado'=>'-11.58',
+
         ]);
         Carteira::create([
             'Nome'=>'Fernando',
             'Proprietario'=>'José Fernando da Silva',
-            'Valor_Investido'=>'7500.00',
-            'Valor_Mercado'=>'800.00',
-            'Resultado'=>'-1.00',
+
         ]);
-      
+
     }
 }

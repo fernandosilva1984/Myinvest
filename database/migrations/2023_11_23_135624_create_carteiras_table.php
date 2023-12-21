@@ -15,9 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('Nome');
             $table->string('Proprietario');
-            $table->decimal('Valor_Investido', 15,2);
-            $table->decimal('Valor_Mercado', 15,2);
-            $table->decimal('Resultado', 5,2);
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
             $table->timestamps();

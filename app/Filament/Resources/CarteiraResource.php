@@ -18,7 +18,8 @@ use Filament\Forms\Components\Grid;
 class CarteiraResource extends Resource
 {
     protected static ?string $model = Carteira::class;
-    protected static ?string $navigationGroup = 'Cadastro';
+    protected static ?string $navigationGroup = 'Cadastros';
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
@@ -27,7 +28,7 @@ class CarteiraResource extends Resource
         return $form
             ->schema([
                 Grid::make()
-                
+
                 ->schema([
                 Forms\Components\TextInput::make('Nome')
                 ->label(label: 'Carteira')
@@ -38,47 +39,28 @@ class CarteiraResource extends Resource
                 ->label(label: 'Proprietário')
                 ->required()
                 ->columnSpan(2)
-                
+
                 ->maxLength(255),
-                Forms\Components\TextInput::make('Valor_Investido')
-                ->label(label: 'Valor investido')
-                ->prefix('R$')
-                    ->required()
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
-                Forms\Components\TextInput::make('Valor_Mercado')
-                ->label(label: 'Valor de mercado')
-                    ->prefix('R$')
-                    ->required()
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
-                Forms\Components\TextInput::make('Resultado')
-                ->suffix('%')
-                    ->required()
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
-               
-                ])
-                ->columns(3)
-            ]);
+
+            ])
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                
+
                 Tables\Columns\TextColumn::make('Nome')
                     ->searchable()
                 ->label(label: 'Carteira'),
                 Tables\Columns\TextColumn::make('Proprietario')
                 ->searchable()
                 ->label(label: 'Proprietário'),
-                Tables\Columns\TextColumn::make('Valor_Investido')
-                ->money('brl')
-                ->label(label: 'Valor investido'),
-                Tables\Columns\TextColumn::make('Valor_Mercado')
-                ->money('brl')
-                ->label(label: 'Valor de mercado'),
-                Tables\Columns\TextColumn::make('Resultado')
-                ->numeric(),
+                Tables\Columns\TextColumn::make('movimentacoes.valor_total')
+                ->searchable()
+                ->label(label: 'ario'),
+
             ])
             ->filters([
                 //
@@ -104,7 +86,8 @@ class CarteiraResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
+            RelationManagers\MovimentacoesRelationManager::class
         ];
     }
 

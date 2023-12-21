@@ -18,8 +18,8 @@ use Filament\Forms\Components\Grid;
 class AtivoResource extends Resource
 {
     protected static ?string $model = Ativo::class;
-    protected static ?string $navigationGroup = 'Cadastro';
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Cadastros';
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
 
