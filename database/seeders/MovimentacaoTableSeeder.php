@@ -43,13 +43,13 @@ class MovimentacaoTableSeeder extends Seeder
         Movimentacao::create([
             'id_carteira'=> '1',
             'data'=> '2023-11-01',
-             'valor_total'=> '150.00',
+             'valor_total'=> '-150.00',
              'tipo' => 'S',
          ]);
          Movimentacao::create([
             'id_carteira'=> '2',
             'data'=> '2023-11-01',
-             'valor_total'=> '150.00',
+             'valor_total'=> '-150.00',
              'tipo' => 'S',
         ]);
     }

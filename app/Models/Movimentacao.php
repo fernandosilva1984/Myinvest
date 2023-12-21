@@ -21,7 +21,7 @@ class Movimentacao extends Model
         public function carteira()
     {
         return $this->hasOne(Carteira::class,  'id','id_carteira');
-    }
+    }/*
     protected function valor_total(): Attribute{
         return Attribute::make(
             get: fn ($value) => str_replace(".", ",", $value),
@@ -31,4 +31,5 @@ class Movimentacao extends Model
                 ],
             );
     }
+*/
 }

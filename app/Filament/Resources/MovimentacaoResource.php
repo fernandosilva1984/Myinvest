@@ -33,6 +33,7 @@ class MovimentacaoResource extends Resource
                     ->label('Carteira')
                     ->required()
                     ->searchable()
+
                     ->options((
                     Carteira::all()->sortBy('Nome')->pluck('Nome','id')->toArray()
                 )),
@@ -46,6 +47,13 @@ class MovimentacaoResource extends Resource
                 Forms\Components\Radio::make('tipo')
                     ->required()
                     ->default('A')
+                    ->reactive()
+                    ->afterStateUpdated(function($state, $set, $get){
+                        $valor_total = 'valor_total';
+                        if ($state == "S"){
+                            $set('valor_total', $get('valor_total')*-1);
+                        }
+                    })
                     ->options([
                         'A' => 'Aporte',
                         'S' => 'Saque',

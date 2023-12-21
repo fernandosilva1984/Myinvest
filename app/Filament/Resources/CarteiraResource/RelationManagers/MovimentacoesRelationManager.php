@@ -37,7 +37,7 @@ class MovimentacoesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('id')
+            ->recordTitleAttribute('movimentações.id')
             ->columns([
                 Tables\Columns\TextColumn::make('data')
                 ->date($format = 'd/m/y')
