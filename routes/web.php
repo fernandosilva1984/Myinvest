@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\cotacaoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+// routes/web.php ou routes/api.php
+
+
+Route::get('/salvar-dados-google-sheets', [cotacaoController::class, 'salvarDadosDoGoogleSheets']);

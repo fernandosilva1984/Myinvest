@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cotacaos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_ativo');
-            $table->datetime('data_hora');
+            $table->datetime('data_hora')->default(DB::raw('current_timestamp'));
             $table->decimal('valor', 15,2);
             $table->timestamps();
             $table->softDeletes();

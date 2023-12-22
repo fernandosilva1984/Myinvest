@@ -6,6 +6,7 @@ use Filament\Forms\Components\TextInput;
 use App\Filament\Resources\AtivoResource\Pages;
 use App\Filament\Resources\AtivoResource\RelationManagers;
 use App\Models\Ativo;
+use App\Models\Cotacao;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,6 +15,10 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Grid;
+use Filament\Tables\Filters\Filter;
+
+
+
 
 class AtivoResource extends Resource
 {
@@ -22,6 +27,7 @@ class AtivoResource extends Resource
     protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
+
 
     public static function form(Form $form): Form
     {
@@ -82,12 +88,15 @@ class AtivoResource extends Resource
 
     public static function table(Table $table): Table
     {
+
         return $table
+
             ->columns([
                 Tables\Columns\TextColumn::make('Ticket')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('Razao_Social')
                     ->searchable()
+                    //->filtable
                     ->label(label:'Razão Social'),
                 Tables\Columns\TextColumn::make('Valor_mercado')
                     ->label(label: 'Valor de mercado')
@@ -97,7 +106,7 @@ class AtivoResource extends Resource
                     ->money('brl'),
                /* Tables\Columns\TextColumn::make('qtd_cotas')
                     ->label(label: 'Quant de cotas'),*/
-                Tables\Columns\TextColumn::make('Valor_PCota')
+                Tables\Columns\TextColumn::make('cotacaoAtual.valor')
                     ->label(label: 'Valor Unit')
                     ->money('brl'),
                 Tables\Columns\TextColumn::make('Tipo')
