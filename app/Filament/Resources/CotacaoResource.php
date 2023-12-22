@@ -65,8 +65,10 @@ class CotacaoResource extends Resource
         ])*/
             ->columns([
                 Tables\Columns\TextColumn::make('ativo.Ticket')
+                ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_hora')
+                ->searchable()
                     ->label('Data/Hora')
                     ->dateTime($format = 'd/m/y H:i:s')
                     ->sortable(),
