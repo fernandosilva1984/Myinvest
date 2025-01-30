@@ -119,7 +119,7 @@ class OperacaoResource extends Resource
                     ->money('brl'),
                 Tables\Columns\TextColumn::make('valor_total')
                     ->label('V. Total')
-                 ->money('brl'),
+                 ->money('BRL'),
                 Tables\Columns\TextColumn::make('tipo')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {

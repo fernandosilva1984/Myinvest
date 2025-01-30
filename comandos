@@ -4,9 +4,13 @@ composer update
 
 php artisan serve 
 
+
 php artisan migrate:refresh --seed
 
 npm run dev
+
+// Criar seeders
+php artisan make:seeder segmentoAtivoSeeder
 
 // Criar model com migration
 

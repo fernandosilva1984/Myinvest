@@ -6,11 +6,14 @@ use Filament\Forms\Components\TextInput;
 use App\Filament\Resources\AtivoResource\Pages;
 use App\Filament\Resources\AtivoResource\RelationManagers;
 use App\Models\Ativo;
+use App\Models\tipoAtivo;
+use App\Models\segmentoAtivo;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Grouping\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Grid;
@@ -44,19 +47,27 @@ class AtivoResource extends Resource
                     ->mask('99.999.999/9999-99')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('Tipo')
-                    ->options([
-                        'Ações' => 'Ações',
-                        'FII' => 'FII',
-                        'Renda Fixa' => 'Renda Fixa',
-                    ])
-                    ->required(),
-                Forms\Components\TextInput::make('Segmento')
+                    Forms\Components\Select::make('id_tipoAtivo')
+                    ->label('Tipo')
                     ->required()
-                    ->maxLength(255),
+                    ->searchable()
+                    ->options((
+                    tipoAtivo::all()->sortBy('tipoAtivo')->pluck('tipoAtivo','id')->toArray()
+                    ))
+                    ->required(),
+                    Forms\Components\Select::make('id_segmentoAtivo')
+                    ->label('Segmento')
+                    ->required()
+                    ->searchable()
+                    ->options((
+                    segmentoAtivo::all()->sortBy('segmentoAtivo')->pluck('segmentoAtivo','id')->toArray()
+                    ))
+                    ->required(),
                 Forms\Components\TextInput::make('qtd_cotas')
+                    ->numeric()
+                    ->maxLength(255)
                     ->label(label: 'Quantidade de cotas')
-                    ->currencyMask(thousandSeparator: '.')
+                   // ->currencyMask(thousandSeparator: '.')
                     ->required(),
                 Forms\Components\TextInput::make('Valor_mercado')
                     ->label(label: 'Valor de mercado')
@@ -83,6 +94,18 @@ class AtivoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->groups([
+            Group::make('tipoAtivo.tipoAtivo')
+            ->label('Tipo')
+            ->collapsible()
+            ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('tipoAtivo', $direction)),
+        ])
+        ->groups([
+            Group::make('segmentoAtivo.segmentoAtivo')
+            ->label('Segmento')
+            ->collapsible()
+            ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('segmentoAtivo', $direction)),
+          ])
             ->columns([
                 Tables\Columns\TextColumn::make('Ticket')
                     ->searchable(),
@@ -100,9 +123,9 @@ class AtivoResource extends Resource
                 Tables\Columns\TextColumn::make('Valor_PCota')
                     ->label(label: 'Valor Unit')
                     ->money('brl'),
-                Tables\Columns\TextColumn::make('Tipo')
+                Tables\Columns\TextColumn::make('tipoAtivo.tipoAtivo')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('Segmento')
+                Tables\Columns\TextColumn::make('segmentoAtivo.segmentoAtivo')
                     ->searchable(),
 
             ])

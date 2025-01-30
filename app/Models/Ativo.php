@@ -18,10 +18,18 @@ class Ativo extends Model
         'Valor_patrimonio',
         'qtd_cotas',
         'Valor_PCota',
-        'Tipo',
-        'Segmento',
+        'id_tipo',
+        'id_segmento',
         'status'
         ];
+        public function tipoAtivo()
+        {
+            return $this->hasOne(tipoAtivo::class,  'id','id_tipo');
+        }  
+        public function segmentoAtivo()
+        {
+            return $this->hasOne(segmentoAtivo::class,  'id','id_segmento');
+        }  
         protected function valor_mercado(): Attribute{
             return Attribute::make(
                 get: fn ($value) => str_replace(".", ",", $value),

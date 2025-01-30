@@ -21,11 +21,14 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserTableSeeder::class,
             CarteiraTableSeeder::class,
+            tipoAtivoSeeder::class,
+            segmentoAtivoSeeder::class,
             AtivoTableSeeder::class,
             DividendoTableSeeder::class,
             OperacaoTableSeeder::class,
             MovimentacaoTableSeeder::class,
             CotacaoTableSeeder::class,
+            
         ]);
     }
 }

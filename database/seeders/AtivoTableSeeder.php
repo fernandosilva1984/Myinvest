@@ -23,8 +23,8 @@ class AtivoTableSeeder extends Seeder
         'Valor_patrimonio'=> '153122204000.00',
         'qtd_cotas'=> '2865417020',
         'Valor_PCota'=> '87.56',
-        'Tipo'=> 'Ações',
-        'Segmento'=> 'Bancos',
+        'id_tipo'=> '1',
+        'id_segmento'=> '1',
         ]);
         Ativo::create([
         'Ticket'=> 'ABEV3',
@@ -34,8 +34,8 @@ class AtivoTableSeeder extends Seeder
         'Valor_patrimonio'=> '90178032000.00',
         'qtd_cotas'=> '2865417020',
         'Valor_PCota'=> '5.72',
-        'Tipo'=> 'Ações',
-        'Segmento'=> 'Bebidas',
+        'id_tipo'=> '1',
+        'id_segmento'=> '5',
         ]);
       
     }
