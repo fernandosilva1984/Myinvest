@@ -14,7 +14,7 @@ export default {
           lg: '976px',
           xl: '1440px',
         },
-        
+
         fontSize: {
             'xs': '0.75rem',
             'sm': '1rem',
@@ -26,7 +26,7 @@ export default {
             '4xl': '2.4rem',
             '5xl': '3.0rem',
         },
-      
+
        /* colors: {
           'blue': '#1fb6ff',
           'purple': '#7e5bef',
@@ -52,5 +52,5 @@ export default {
           }
         }
       }
-      
+
 }

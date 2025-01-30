@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ativo extends Model
@@ -56,6 +57,14 @@ class Ativo extends Model
                         'valor_PCota`' => str_replace(",", ".", str_replace(".", "", $value)),
                     ],
                 );
+        }
+
+        public function cotacaoAtual()
+        {
+
+            $saida = $this->hasOne(Cotacao::class,'id_ativo')->select('id_ativo', DB::raw('valor'))->latest();
+
+              return $saida;
         }
 
 }

@@ -30,9 +30,7 @@ class CotacaoResource extends Resource
         return $form
             ->schema([
                 Grid::make()
-
                 ->schema([
-
                 Forms\Components\Select::make('id_ativo')
                 ->label('Ativo')
                 ->required()
@@ -48,10 +46,8 @@ class CotacaoResource extends Resource
                 ->label('Valor')
                 ->prefix('R$')
                 ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
-
             ])
             ->columns(3),
-
         ]);
     }
 
@@ -69,8 +65,10 @@ class CotacaoResource extends Resource
         ])*/
             ->columns([
                 Tables\Columns\TextColumn::make('ativo.Ticket')
+                ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('data_hora')
+                ->searchable()
                     ->label('Data/Hora')
                     ->dateTime($format = 'd/m/y H:i:s')
                     ->sortable(),
