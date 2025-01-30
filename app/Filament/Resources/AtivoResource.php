@@ -6,12 +6,8 @@ use Filament\Forms\Components\TextInput;
 use App\Filament\Resources\AtivoResource\Pages;
 use App\Filament\Resources\AtivoResource\RelationManagers;
 use App\Models\Ativo;
-<<<<<<< HEAD
 use App\Models\tipoAtivo;
 use App\Models\segmentoAtivo;
-=======
-use App\Models\Cotacao;
->>>>>>> d97e081cf0ec1eabf34c3b394171be0876a7844a
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -21,10 +17,6 @@ use Filament\Tables\Grouping\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Grid;
-use Filament\Tables\Filters\Filter;
-
-
-
 
 class AtivoResource extends Resource
 {
@@ -33,7 +25,6 @@ class AtivoResource extends Resource
     protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-line';
-
 
     public static function form(Form $form): Form
     {
@@ -56,7 +47,7 @@ class AtivoResource extends Resource
                     ->mask('99.999.999/9999-99')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\Select::make('id_tipoAtivo')
+                    Forms\Components\Select::make('id_tipo')
                     ->label('Tipo')
                     ->required()
                     ->searchable()
@@ -64,7 +55,7 @@ class AtivoResource extends Resource
                     tipoAtivo::all()->sortBy('tipoAtivo')->pluck('tipoAtivo','id')->toArray()
                     ))
                     ->required(),
-                    Forms\Components\Select::make('id_segmentoAtivo')
+                    Forms\Components\Select::make('id_segmento')
                     ->label('Segmento')
                     ->required()
                     ->searchable()
@@ -102,9 +93,7 @@ class AtivoResource extends Resource
 
     public static function table(Table $table): Table
     {
-
         return $table
-<<<<<<< HEAD
         ->groups([
             Group::make('tipoAtivo.tipoAtivo')
             ->label('Tipo')
@@ -117,15 +106,11 @@ class AtivoResource extends Resource
             ->collapsible()
             ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('segmentoAtivo', $direction)),
           ])
-=======
-
->>>>>>> d97e081cf0ec1eabf34c3b394171be0876a7844a
             ->columns([
                 Tables\Columns\TextColumn::make('Ticket')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('Razao_Social')
                     ->searchable()
-                    //->filtable
                     ->label(label:'Razão Social'),
                 Tables\Columns\TextColumn::make('Valor_mercado')
                     ->label(label: 'Valor de mercado')
@@ -135,7 +120,7 @@ class AtivoResource extends Resource
                     ->money('brl'),
                /* Tables\Columns\TextColumn::make('qtd_cotas')
                     ->label(label: 'Quant de cotas'),*/
-                Tables\Columns\TextColumn::make('cotacaoAtual.valor')
+                Tables\Columns\TextColumn::make('Valor_PCota')
                     ->label(label: 'Valor Unit')
                     ->money('brl'),
                 Tables\Columns\TextColumn::make('tipoAtivo.tipoAtivo')
