@@ -15,4 +15,4 @@ php artisan make:model Movimentacao -m
 
 ==================== COMANDOS FILAMENT ===============================
 
-php artisan make:filament-resource OperacaoResource --generate --view
+php artisan make:filament-resource OperacaoResource --generate --view   
