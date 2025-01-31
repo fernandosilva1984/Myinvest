@@ -17,6 +17,7 @@ use Filament\Tables\Grouping\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Grid;
+use Leandrocfe\FilamentPtbrFormFields\Money;
 
 class AtivoResource extends Resource
 {
@@ -67,22 +68,22 @@ class AtivoResource extends Resource
                     ->numeric()
                     ->maxLength(255)
                     ->label(label: 'Quantidade de cotas')
-                   // ->currencyMask(thousandSeparator: '.')
+
                     ->required(),
-                Forms\Components\TextInput::make('Valor_mercado')
+                    Money::make('Valor_mercado')
                     ->label(label: 'Valor de mercado')
                     ->prefix('R$')
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
+
                     ->required(),
-                Forms\Components\TextInput::make('Valor_patrimonio')
+                    Money::make('Valor_patrimonio')
                     ->label(label: 'Valor Patrimonial')
                     ->prefix('R$')
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
+
                     ->required(),
-                Forms\Components\TextInput::make('Valor_PCota')
+                    Money::make('Valor_PCota')
                     ->label(label: 'Valor por unid')
                     ->prefix('R$')
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
+
                     ->required(),
                 Forms\Components\Toggle::make('status')
                     ->required(),
