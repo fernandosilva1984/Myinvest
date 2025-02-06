@@ -14,8 +14,8 @@ use App\Http\Controllers\cotacaoController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return redirect('/admin'); })->name('login');
+//});
 
 
 // routes/web.php ou routes/api.php
