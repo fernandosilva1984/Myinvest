@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('segmentoAtivo')->nullable();
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
-            $table->timestamps();
+            $table->timestamps()->default(DB::raw('current_timestamp'));
         });
     }
 

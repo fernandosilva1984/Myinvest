@@ -24,7 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_segmento');
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
-            $table->timestamps();
+            $table->timestamps()->default(DB::raw('current_timestamp'));
             $table->foreign('id_tipo')->references('id')->on('tipo_ativos');
             $table->foreign('id_segmento')->references('id')->on('segmento_ativos');
         });

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('obs')->nullable();
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
-            $table->timestamps();
+            $table->timestamps()->default(DB::raw('current_timestamp'));
             $table->foreign('id_carteira')->references('id')->on('carteiras');
             $table->foreign('id_ativo')->references('id')->on('ativos');
         });
