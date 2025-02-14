@@ -19,12 +19,13 @@ return new class extends Migration
             $table->decimal('Valor_mercado', 15,2);
             $table->decimal('Valor_patrimonio', 15,2);
             $table->decimal('qtd_cotas',15,0);
+            $table->decimal('qtd_meta',15,0);
             $table->decimal('Valor_PCota', 15,2);
             $table->unsignedBigInteger('id_tipo');
             $table->unsignedBigInteger('id_segmento');
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
-            $table->timestamps()->default(DB::raw('current_timestamp'));
+            $table->timestamps();
             $table->foreign('id_tipo')->references('id')->on('tipo_ativos');
             $table->foreign('id_segmento')->references('id')->on('segmento_ativos');
         });

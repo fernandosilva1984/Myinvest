@@ -14,16 +14,24 @@ class tipoAtivoSeeder extends Seeder
     public function run(): void
     {
         tipoAtivo::create([
+            //01
             'tipoAtivo'=>'Ações',
         ]);
         tipoAtivo::create([
+            //02
             'tipoAtivo'=>'FII',
         ]);
         tipoAtivo::create([
+            //03
             'tipoAtivo'=>'RF',
         ]);
         tipoAtivo::create([
+            //04
             'tipoAtivo'=>'Cripto',
+        ]);
+        tipoAtivo::create([
+            //05
+            'tipoAtivo'=>'FI',
         ]);
     }
 }

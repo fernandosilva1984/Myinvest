@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('Proprietario');
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
-            $table->timestamps()->default(DB::raw('current_timestamp'));
+            $table->timestamps();
         });
     }
 

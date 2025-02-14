@@ -22,6 +22,7 @@ class AtivoTableSeeder extends Seeder
         'Valor_mercado'=> '142869692617.20',
         'Valor_patrimonio'=> '153122204000.00',
         'qtd_cotas'=> '2865417020',
+        'qtd_meta'=> '300',
         'Valor_PCota'=> '87.56',
         'id_tipo'=> '1',
         'id_segmento'=> '1',
@@ -33,10 +34,11 @@ class AtivoTableSeeder extends Seeder
         'Valor_mercado'=> '210786289339.92',
         'Valor_patrimonio'=> '90178032000.00',
         'qtd_cotas'=> '2865417020',
+        'qtd_meta'=> '300',
         'Valor_PCota'=> '5.72',
         'id_tipo'=> '1',
         'id_segmento'=> '5',
         ]);
-      
+
     }
 }

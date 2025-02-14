@@ -17,7 +17,7 @@ return new class extends Migration
             $table->datetime('data_hora')->default(DB::raw('current_timestamp'));
             $table->decimal('valor', 15,2);
             $table->softDeletes();
-            $table->timestamps()->default(DB::raw('current_timestamp'));
+            $table->timestamps();
             $table->foreign('id_ativo')->references('id')->on('ativos');
             $table->boolean('status')->default(TRUE);
         });

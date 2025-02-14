@@ -23,12 +23,12 @@ class DatabaseSeeder extends Seeder
             CarteiraTableSeeder::class,
             tipoAtivoSeeder::class,
             segmentoAtivoSeeder::class,
-            AtivoTableSeeder::class,
-            DividendoTableSeeder::class,
-            OperacaoTableSeeder::class,
-            MovimentacaoTableSeeder::class,
-            CotacaoTableSeeder::class,
-            
+           // AtivoTableSeeder::class,
+           // DividendoTableSeeder::class,
+           // OperacaoTableSeeder::class,
+            //MovimentacaoTableSeeder::class,
+           // CotacaoTableSeeder::class,
+
         ]);
     }
 }

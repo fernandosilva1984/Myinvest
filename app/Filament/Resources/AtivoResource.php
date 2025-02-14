@@ -68,17 +68,19 @@ class AtivoResource extends Resource
                     ->numeric()
                     ->maxLength(255)
                     ->label(label: 'Quantidade de cotas')
-
+                    ->required(),
+                    Forms\Components\TextInput::make('qtd_meta')
+                    ->numeric()
+                    ->maxLength(255)
+                    ->label(label: 'Meta de cotas')
                     ->required(),
                     Money::make('Valor_mercado')
                     ->label(label: 'Valor de mercado')
                     ->prefix('R$')
-
                     ->required(),
                     Money::make('Valor_patrimonio')
                     ->label(label: 'Valor Patrimonial')
                     ->prefix('R$')
-
                     ->required(),
                     Money::make('Valor_PCota')
                     ->label(label: 'Valor por unid')
