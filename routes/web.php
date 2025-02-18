@@ -21,4 +21,4 @@ Route::get('/', function () {
 // routes/web.php ou routes/api.php
 
 
-Route::get('/salvar-dados-google-sheets', [cotacaoController::class, 'salvarDadosDoGoogleSheets']);
+Route::get('/salvar-cotacoes', [cotacaoController::class, 'buscarESalvarCotacoes']);

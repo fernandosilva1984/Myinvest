@@ -57,9 +57,20 @@ class CarteiraResource extends Resource
                 Tables\Columns\TextColumn::make('Proprietario')
                 ->searchable()
                 ->label(label: 'Proprietário'),
-                Tables\Columns\TextColumn::make('total_invest.valor_total')
+                Tables\Columns\TextColumn::make('Aportes.total')
                 ->money('brl')
-                ->label(label: 'Valor Investido'),
+                ->label(label: 'Aportes'),
+                Tables\Columns\TextColumn::make('Saldo_operacoes.total')
+                ->money('brl')
+                ->label(label: 'Resultado'),
+                Tables\Columns\TextColumn::make('Saques.total')
+                ->money('brl')
+                ->label(label: 'Saques'),
+                Tables\Columns\TextColumn::make('saldo')
+                ->money('brl')
+                ->label(label: 'Saldo')
+                ->getStateUsing(function ($record) {
+                    return $record->saldo();}),
 
             ])
             ->filters([

@@ -23,14 +23,20 @@ class Ativo extends Model
         'id_segmento',
         'status'
         ];
+
+        // Escopo local para filtrar registros
+        public function scopeAtivosAtivos($query)
+        {
+            return $query->where('status', 1);
+        }
         public function tipoAtivo()
         {
             return $this->hasOne(tipoAtivo::class,  'id','id_tipo');
-        }  
+        }
         public function segmentoAtivo()
         {
             return $this->hasOne(segmentoAtivo::class,  'id','id_segmento');
-        }  
+        }
         protected function valor_mercado(): Attribute{
             return Attribute::make(
                 get: fn ($value) => str_replace(".", ",", $value),

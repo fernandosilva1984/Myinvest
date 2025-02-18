@@ -12,7 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            app(\App\Http\Controllers\CotacaoController::class)->buscarESalvarCotacoes();
+        })->cron('*/20 * * * *'); // Executa a cada 20m todos os dias
     }
 
     /**

@@ -95,11 +95,11 @@ class segmentoAtivoSeeder extends Seeder
         ]);
         segmentoAtivo::create([
             //21
-            'SegmentoAtivo'=>'Petróleo. Gás e Biocombustíveis',
+            'SegmentoAtivo'=>'Seguros',
         ]);
         segmentoAtivo::create([
-            //22
-            'SegmentoAtivo'=>'Seguros',
+            //21
+            'SegmentoAtivo'=>'Fundo de Investimento MM',
         ]);
     }
 }

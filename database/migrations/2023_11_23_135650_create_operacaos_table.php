@@ -19,6 +19,9 @@ return new class extends Migration
             $table->integer('qtd')->nullable();
             $table->decimal('valor_unitario', 15,2)->nullable();
             $table->decimal('valor_total',15,2)->storedAs('qtd * valor_unitario')->nullable();
+            $table->decimal('preco_medio', 15,10)->nullable();
+            $table->decimal('resultado', 15,10)->nullable();
+            $table->decimal('tarifa', 15,2)->nullable();
             $table->string('tipo');
             $table->string('obs')->nullable();
             $table->boolean('status')->default(TRUE);

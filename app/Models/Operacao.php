@@ -17,6 +17,9 @@ class Operacao extends Model
         'qtd',
         'valor_unitario',
         'valor_total',
+        'preco_medio',
+        'resultado',
+        'tarifa',
         'tipo',
         'obs',
         'status'

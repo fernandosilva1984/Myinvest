@@ -1,43 +1,42 @@
 <?php
 
 namespace App\Http\Controllers;
-// app/Http/Controllers/SeuController.php
-//namespace App\Http\Controllers;
-
-use App\Models\Cotacao;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use App\Models\Ativo;
+use App\Models\Cotacao;
+use GuzzleHttp\Client;
+use Carbon\Carbon;
 
-class cotacaoController extends Controller
+class CotacaoController extends Controller
 {
-    public function salvarDadosDoGoogleSheets()
+    // Método para buscar e salvar cotações
+    public function buscarESalvarCotacoes()
     {
-        // Faça a requisição para a API do Google Sheets
-        $response = Http::withoutVerifying()->get('https://sheets.googleapis.com/v4/spreadsheets/1vRQLbi4b1MwoNqs_qx3xmwSArbXCWS4B4nRXsERp-zM/values/cotações!a2:d26', [
-            'majorDimension' => 'ROWS',
-            'key' => 'AIzaSyC23EajrXzvdCCPCvKiTIyzQw8kGju9094',
-        ]);
+        // Busca todos os ativos (ações e fundos imobiliários)
+        $ativos = Ativo::where('status', 1)->where('id_tipo','<=',2)->get();
 
-        // Verifique se a requisição foi bem-sucedida
-        if ($response->successful()) {
-            // Obtenha os dados da resposta
-            $dadosArray = $response->json()['values'];
+        // Inicializa o cliente HTTP (Guzzle)
+        $client = new Client(['verify' => false,]);
 
-            // Percorra os dados e salve no banco de dados
-            foreach ($dadosArray as $dados) {
-                Cotacao::create([
-                    'id_ativo' => $dados[0],
-                    'valor' => $dados[2],
+        foreach ($ativos as $ativo) {
+            // Monta o símbolo para a API do Yahoo Finance
+            $symbol = $ativo->Ticket . '.SA'; // Exemplo: PETR4.SA, VISC11.SA
 
-                    // Adicione mais campos conforme necessário
-                ]);
-            }
+            // Faz a requisição à API do Yahoo Finance
+            $response = $client->get("https://query1.finance.yahoo.com/v8/finance/chart/{$symbol}");
+            $data = json_decode($response->getBody(), true);
 
-            // Retorne uma resposta, redirecione ou faça o que for apropriado para o seu caso
-            return response()->json(['mensagem' => 'Dados do Google Sheets salvos com sucesso']);
-        } else {
-            // Caso a requisição não seja bem-sucedida, trate o erro conforme necessário
-            return response()->json(['erro' => 'Erro ao obter dados do Google Sheets'], $response->status());
+            // Extrai o valor da cotação
+            $valor = $data['chart']['result'][0]['meta']['regularMarketPrice'];
+
+            // Salva a cotação na tabela `cotacoes`
+            Cotacao::create([
+                'id_ativo' => $ativo->id,
+                'valor' => $valor,
+                //'data_hora' => Carbon::now()->toDateString(),
+            ]);
         }
+
+        return response()->json(['message' => 'Cotações atualizadas com sucesso!']);
     }
 }
