@@ -85,7 +85,6 @@ class AtivoResource extends Resource
                     Money::make('Valor_PCota')
                     ->label(label: 'Valor por unid')
                     ->prefix('R$')
-
                     ->required(),
                 Forms\Components\Toggle::make('status')
                     ->required(),
@@ -97,6 +96,7 @@ class AtivoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
         ->groups([
             Group::make('tipoAtivo.tipoAtivo')
             ->label('Tipo')
@@ -123,7 +123,7 @@ class AtivoResource extends Resource
                     ->money('brl'),
                /* Tables\Columns\TextColumn::make('qtd_cotas')
                     ->label(label: 'Quant de cotas'),*/
-                Tables\Columns\TextColumn::make('Valor_PCota')
+                Tables\Columns\TextColumn::make('cotacaoAtual.valor')
                     ->label(label: 'Valor Unit')
                     ->money('brl'),
                 Tables\Columns\TextColumn::make('tipoAtivo.tipoAtivo')

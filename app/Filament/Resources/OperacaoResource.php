@@ -18,6 +18,12 @@ use Filament\Tables\Grouping\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Grid;
+use Leandrocfe\FilamentPtbrFormFields\Money;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Forms\Components\Modal;
+use Filament\Support\Enums\MaxWidth;
+//use Filament\Forms\Components\Money;
 
 class OperacaoResource extends Resource
 {
@@ -54,15 +60,26 @@ class OperacaoResource extends Resource
                         ->required(),
                    Forms\Components\TextInput::make('qtd')
                         ->label('Quantidade')
+                        //->live(debounce: 1)
                         ->numeric(),
-                    Forms\Components\TextInput::make('valor_unitario')
+                        Money::make('valor_unitario')
                         ->label('Valor Unitário')
-                        ->prefix('R$')
-                        ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
-                    Forms\Components\TextInput::make('valor_total')
+                        ->live(debounce: 500) // Atualiza automaticamente
+                        ->afterStateUpdated(function (Get $get, Set $set) {
+                            $qtd = floatval(str_replace(',', '.', $get('qtd') ?? 0)); // Converte para número
+                            $valorUnitario = floatval(str_replace(',', '.', $get('valor_unitario') ?? 0));
+                            $set('valor_total', $qtd * $valorUnitario);
+                        })
+                        ->formatStateUsing(function ($state) {
+                            // Substitui vírgula por ponto
+                            return str_replace(',', '.', $state);
+                        })
+                        ->prefix('R$'),
+                        Forms\Components\TextInput::make('valor_total')
                         ->label('Valor Total')
+                        ->formatStateUsing(fn ($state) => number_format($state, 2, ',', '.'))
                         ->prefix('R$')
-                        ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
+                        ->numeric()
                         ->disabled(),
                     Forms\Components\Radio::make('tipo')
                         ->inline()
@@ -79,7 +96,13 @@ class OperacaoResource extends Resource
                 ->columnSpan(3),
             ]);
     }
-
+// Função auxiliar para calcular o valor total
+private static function calcularValorTotal(Get $get, Set $set)
+{
+    $qtd = floatval($get('qtd') ?? 0);
+    $valorUnitario = floatval($get('valor_unitario') ?? 0);
+    $set('valor_total', $qtd * $valorUnitario);
+}
     public static function table(Table $table): Table
     {
         return $table
@@ -139,6 +162,10 @@ class OperacaoResource extends Resource
                 ->label('')
                 ->tooltip('Editar'),
                 Tables\Actions\DeleteAction::make()
+                ->modalHeading('Tem certeza?')
+                ->modalDescription('Essa ação não pode ser desfeita.')
+                ->modalButton('Excluir')
+                ->modalWidth(MaxWidth::Large) // ✅ Correção: Usando o enum corretamente
                 ->label('')
                 ->tooltip('Excluir'),
             ])

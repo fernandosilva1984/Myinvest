@@ -15,6 +15,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Grouping\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Leandrocfe\FilamentPtbrFormFields\Money;
 
 class MovimentacaoResource extends Resource
 {
@@ -40,10 +41,10 @@ class MovimentacaoResource extends Resource
                 Forms\Components\DatePicker::make('data')
                     ->label('Data')
                     ->required(),
-                Forms\Components\TextInput::make('valor_total')
+                    Money::make('valor_total')
                     ->label('Valor')
-                    ->prefix('R$')
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
+                    ->prefix('R$'),
+                  //  ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
                 Forms\Components\Radio::make('tipo')
                     ->required()
                     ->default('A')
@@ -51,11 +52,12 @@ class MovimentacaoResource extends Resource
                     ->afterStateUpdated(function($state, $set, $get){
                         $valor_total = 'valor_total';
                         if ($state == "S"){
-                            $set('valor_total', $get('valor_total')*-1);
+                            $set('valor_total', $get('valor_total'));
                         }
                     })
                     ->options([
                         'A' => 'Aporte',
+                        'D' => 'Dividendo',
                         'S' => 'Saque',
                 ]),
                 Forms\Components\TextInput::make('obs')
@@ -91,6 +93,7 @@ class MovimentacaoResource extends Resource
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                     'A' => 'success',
+                    'D' => 'info',
                     'S' => 'danger',
                 }),
 

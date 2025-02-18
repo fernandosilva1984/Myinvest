@@ -18,19 +18,46 @@ class Carteira extends Model
         'status'
         ];
 
-        public function movimentacoes()
+        public function Saldo_operacoes()
         {
 
-            $saida = $this->hasMany(Movimentacao::class,  'id_carteira')->where('tipo', 'S');
+            $saldo_operacao = $this->hasMany(Operacao::class,  'id_carteira')
+            ->select('id_carteira', DB::raw('sum(resultado) as `total`'))->where('tipo', 'V')->groupBy('id_carteira');
               //->select('id_carteira', DB::raw('id','tipo','data','valor_total','id_carteira'))->where('tipo','=','S');
 
-              return $saida;
+              return $saldo_operacao;
         }
-        public function total_invest()
+        public function Aportes()
         {
-              return $this->hasMany(Movimentacao::class,  'id_carteira', 'id')
-              ->select('id_carteira', DB::raw('sum(valor_total) as `valor_total`'))->groupBy('id_carteira');
+            $Aportes =$this->hasMany(Movimentacao::class,  'id_carteira', 'id')
+              ->select('id_carteira', DB::raw('sum(valor_total) as `total`'))->where('tipo', 'A')->groupBy('id_carteira');
+              return $Aportes;
         }
+        public function Saques()
+        {
+
+            $Saques =$this->hasMany(Movimentacao::class,  'id_carteira', 'id')
+              ->select('id_carteira', DB::raw('sum(valor_total) as `total`'))->where('tipo', 'S')->groupBy('id_carteira');
+            return $Saques;
+
+        }
+
+        public function saldo()
+        {
+
+            $totalAportes = $this->hasMany(Movimentacao::class, 'id_carteira', 'id')
+            ->where('tipo', 'A')
+            ->sum('valor_total');
+
+            $totalSaques = $this->hasMany(Movimentacao::class, 'id_carteira', 'id')
+            ->where('tipo', 'S')
+            ->sum('valor_total');
+
+            return $totalAportes - $totalSaques;
+        }
+
+
+
 
 
 
