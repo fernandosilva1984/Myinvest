@@ -22,6 +22,7 @@ use Filament\Forms\Components\Grid;
 use Leandrocfe\FilamentPtbrFormFields\Money;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Forms\Components\TextInput;
 
 class DividendoResource extends Resource
 {
@@ -46,45 +47,48 @@ class DividendoResource extends Resource
                 ->options((
                     Ativo::all()->sortBy('Ticket')->pluck('Ticket','id')->toArray()
                 )),
-                Forms\Components\DatePicker::make('data_ref')
-               // ->native(false)
-               // ->displayFormat('m/Y')
-                ->label('Periodo de Ref')
-                    ->required(),
-                Forms\Components\DatePicker::make('data_com')
-                    ->label('Data Com')
-                    ->required(),
-                Forms\Components\DatePicker::make('data_pag')
-                    ->label('Data de Pagamento')
-                    ->required(),
+               
                     Money::make('valor_dividendo')
                     ->label('Dividendo')
                     ->required()
-                    /*->formatStateUsing(function ($state) {
-                        // Substitui vírgula por ponto
-                        return str_replace(',', '.', $state);
-                    })*/
                     ->prefix('R$'),
-                    //->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
                     Money::make('valor_jcp')
                     ->label('JCP/Amort')
                     ->prefix('R$')
-                    ->live(debounce: 500) // Atualiza automaticamente
-                    ->afterStateUpdated(function (Get $get, Set $set) {
-                        $dividendo =  $get('valor_dividendo') ?? 0; // Converte para número
-                        $jcp =  $get('valor_jcp') ?? 0;
-                        $set('valor_total', $dividendo + $jcp);
-                    })
+                    
                   /*  ->formatStateUsing(function ($state) {
                         // Substitui vírgula por ponto
                         return str_replace(',', '.', $state);
                     })*/
                                       //  ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
                     ->reactive(),
-                Forms\Components\TextInput::make('valor_total')
+                
+                    Forms\Components\DatePicker::make('data_ref')
+                    // ->native(false)
+                    // ->displayFormat('m/Y')
+                     ->label('Periodo de Ref')
+                     ->required(),
+                Forms\Components\DatePicker::make('data_com')
+                    ->label('Data Com')
+                    ->live(debounce: 1500) // Atualiza automaticamente
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        $dividendo =  floatval(str_replace(',', '.',$get('valor_dividendo') ?? 0)); // Converte para número
+                        $jcp = floatval(str_replace(',', '.', $get('valor_jcp') ?? 0));
+                        $set('valor_total', $dividendo + $jcp);
+                    })
+                    ->required(),
+                Forms\Components\DatePicker::make('data_pag')
+                    ->label('Data de Pagamento')
+                    ->required(),
+                    TextInput::make('valor_total')
                     ->disabled()
                     ->prefix('R$')
-                    ->formatStateUsing(fn ($state) => number_format($state, 2, ',', '.')),
+                    ->mask((fn (TextInput\Mask $mask) => $mask->money(prefix: 'R$', thousandsSeparator: '.', decimalSeparator: ',')))
+                    ->formatStateUsing(function ($state) {
+                        // Substitui vírgula por ponto
+                        return str_replace(',', '.', $state);
+                    }),
+
                 Forms\Components\TextInput::make('obs')
                     ->label('Observação')
                     ->columnSpan(3),
