@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Grouping\Group;
 use Filament\Forms\Components\Grid;
+use Leandrocfe\FilamentPtbrFormFields\Money;
 
 class CotacaoResource extends Resource
 {
@@ -41,11 +42,11 @@ class CotacaoResource extends Resource
                 Forms\Components\DateTimePicker::make('data_hora')
                 ->label('Data/Hora')
                 ->required(),
-                Forms\Components\TextInput::make('valor')
+                MoneyTextInput::make('valor')
                 ->required()
                 ->label('Valor')
-                ->prefix('R$')
-                ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
+                ->prefix('R$'),
+              //  ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
             ])
             ->columns(3),
         ]);
@@ -89,6 +90,10 @@ class CotacaoResource extends Resource
                 ->label('')
                 ->tooltip('Editar'),
                 Tables\Actions\DeleteAction::make()
+                ->modalHeading('Tem certeza?')
+                ->modalDescription('Essa ação não pode ser desfeita.')
+                ->modalButton('Excluir')
+                ->modalWidth('md') // ✅ Correção: Usando o enum corretamente
                 ->label('')
                 ->tooltip('Excluir'),
             ])

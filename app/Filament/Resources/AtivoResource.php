@@ -83,7 +83,7 @@ class AtivoResource extends Resource
                     ->prefix('R$')
                     ->required(),
                     Money::make('Valor_PCota')
-                    ->label(label: 'Valor por unid')
+                    ->label(label: 'Cotação Atual')
                     ->prefix('R$')
                     ->required(),
                 Forms\Components\Toggle::make('status')
@@ -117,18 +117,34 @@ class AtivoResource extends Resource
                     ->label(label:'Razão Social'),
                 Tables\Columns\TextColumn::make('Valor_mercado')
                     ->label(label: 'Valor de mercado')
-                    ->money('brl'),
+                    ->money('brl')
+                    ->getStateUsing(function ($record) {
+                        // Verifica se qtd_cotas ou cotacaoAtual.valor são zero ou nulos
+                        if (empty($record->qtd_cotas) || empty($record->cotacaoAtual->valor)) {
+                            return 0; // Retorna 0 se algum dos valores for inválido
+                        }
+                        // Calcula o valor de mercado multiplicando qtd_cotas por cotacaoAtual.valor
+                        return $record->qtd_cotas * $record->cotacaoAtual->valor;
+                      }),
                 Tables\Columns\TextColumn::make('Valor_patrimonio')
                     ->label(label: 'Valor patrimonial')
                     ->money('brl'),
-               /* Tables\Columns\TextColumn::make('qtd_cotas')
-                    ->label(label: 'Quant de cotas'),*/
+                    Tables\Columns\TextColumn::make('saldo_operacoes')
+                    ->label('QTD Cotas')
+                    ->getStateUsing(function ($record) {
+                        // Chama a função saldoOperacoes do model Ativo
+                        return $record->saldoOperacoes();
+                    })
+                    ->numeric() // Formata como número
+                    ->sortable(), // Permite ordenação
                 Tables\Columns\TextColumn::make('cotacaoAtual.valor')
-                    ->label(label: 'Valor Unit')
+                    ->label(label: 'Cotação')
                     ->money('brl'),
                 Tables\Columns\TextColumn::make('tipoAtivo.tipoAtivo')
+                    ->label('Tipo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('segmentoAtivo.segmentoAtivo')
+                    ->label('Segmento')
                     ->searchable(),
 
             ])
@@ -144,6 +160,10 @@ class AtivoResource extends Resource
                 ->label('')
                 ->tooltip('Editar'),
                 Tables\Actions\DeleteAction::make()
+                ->modalHeading('Tem certeza?')
+                ->modalDescription('Essa ação não pode ser desfeita.')
+                ->modalButton('Excluir')
+                ->modalWidth('md') // ✅ Correção: Usando o enum corretamente
                 ->label('')
                 ->tooltip('Excluir'),
             ])

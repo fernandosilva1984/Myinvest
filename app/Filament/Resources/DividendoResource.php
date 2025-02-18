@@ -19,6 +19,9 @@ use Filament\Tables\Grouping\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Grid;
+use Leandrocfe\FilamentPtbrFormFields\Money;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 
 class DividendoResource extends Resource
 {
@@ -54,23 +57,34 @@ class DividendoResource extends Resource
                 Forms\Components\DatePicker::make('data_pag')
                     ->label('Data de Pagamento')
                     ->required(),
-                Forms\Components\TextInput::make('valor_dividendo')
+                    Money::make('valor_dividendo')
                     ->label('Dividendo')
                     ->required()
+                    /*->formatStateUsing(function ($state) {
+                        // Substitui vírgula por ponto
+                        return str_replace(',', '.', $state);
+                    })*/
+                    ->prefix('R$'),
+                    //->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
+                    Money::make('valor_jcp')
+                    ->label('JCP/Amort')
                     ->prefix('R$')
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
-                Forms\Components\TextInput::make('valor_jcp')
-                    ->label('JCP')
-                    ->prefix('R$')
-                    ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
+                    ->live(debounce: 500) // Atualiza automaticamente
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        $dividendo =  $get('valor_dividendo') ?? 0; // Converte para número
+                        $jcp =  $get('valor_jcp') ?? 0;
+                        $set('valor_total', $dividendo + $jcp);
+                    })
+                  /*  ->formatStateUsing(function ($state) {
+                        // Substitui vírgula por ponto
+                        return str_replace(',', '.', $state);
+                    })*/
+                                      //  ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
                     ->reactive(),
                 Forms\Components\TextInput::make('valor_total')
-
                     ->disabled()
-
                     ->prefix('R$')
-
-                ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2),
+                    ->formatStateUsing(fn ($state) => number_format($state, 2, ',', '.')),
                 Forms\Components\TextInput::make('obs')
                     ->label('Observação')
                     ->columnSpan(3),
@@ -130,6 +144,10 @@ class DividendoResource extends Resource
                 ->label('')
                 ->tooltip('Editar'),
                 Tables\Actions\DeleteAction::make()
+                ->modalHeading('Tem certeza?')
+                ->modalDescription('Essa ação não pode ser desfeita.')
+                ->modalButton('Excluir')
+                ->modalWidth('md') // ✅ Correção: Usando o enum corretamente
                 ->label('')
                 ->tooltip('Excluir'),
             ])

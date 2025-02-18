@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class UserResource extends Resource
 {
 
-    protected static ?string $navigationGroup = 'Cadastros';
-    protected static ?int $navigationSort = 6;
+    protected static ?string $navigationGroup = 'Configurações';
+    protected static ?int $navigationSort = 3;
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
@@ -74,6 +74,10 @@ class UserResource extends Resource
                 ->label('')
                 ->tooltip('Editar'),
                 Tables\Actions\DeleteAction::make()
+                ->modalHeading('Tem certeza?')
+                ->modalDescription('Essa ação não pode ser desfeita.')
+                ->modalButton('Excluir')
+                ->modalWidth('md') // ✅ Correção: Usando o enum corretamente
                 ->label('')
                 ->tooltip('Excluir'),
             ])

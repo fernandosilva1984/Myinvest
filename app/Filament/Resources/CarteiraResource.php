@@ -31,17 +31,15 @@ class CarteiraResource extends Resource
 
                 ->schema([
                 Forms\Components\TextInput::make('Nome')
-                ->label(label: 'Carteira')
-                ->required()
-                ->columnSpan(1)
-                ->maxLength(255),
+                    ->label(label: 'Carteira')
+                    ->required()
+                    ->columnSpan(1)
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('Proprietario')
-                ->label(label: 'Proprietário')
-                ->required()
-                ->columnSpan(2)
-
-                ->maxLength(255),
-
+                    ->label(label: 'Proprietário')
+                    ->required()
+                    ->columnSpan(2)
+                    ->maxLength(255),
             ])
         ]);
     }
@@ -53,24 +51,24 @@ class CarteiraResource extends Resource
 
                 Tables\Columns\TextColumn::make('Nome')
                     ->searchable()
-                ->label(label: 'Carteira'),
+                    ->label(label: 'Carteira'),
                 Tables\Columns\TextColumn::make('Proprietario')
-                ->searchable()
-                ->label(label: 'Proprietário'),
+                    ->searchable()
+                    ->label(label: 'Proprietário'),
                 Tables\Columns\TextColumn::make('Aportes.total')
-                ->money('brl')
-                ->label(label: 'Aportes'),
+                    ->money('brl')
+                    ->label(label: 'Aportes'),
                 Tables\Columns\TextColumn::make('Saldo_operacoes.total')
-                ->money('brl')
-                ->label(label: 'Resultado'),
+                    ->money('brl')
+                    ->label(label: 'Resultado'),
                 Tables\Columns\TextColumn::make('Saques.total')
-                ->money('brl')
-                ->label(label: 'Saques'),
+                    ->money('brl')
+                    ->label(label: 'Saques'),
                 Tables\Columns\TextColumn::make('saldo')
-                ->money('brl')
-                ->label(label: 'Saldo')
-                ->getStateUsing(function ($record) {
-                    return $record->saldo();}),
+                    ->money('brl')
+                    ->label(label: 'Saldo')
+                    ->getStateUsing(function ($record) {
+                        return $record->saldo();}),
 
             ])
             ->filters([
@@ -84,6 +82,10 @@ class CarteiraResource extends Resource
                 ->label('')
                 ->tooltip('Editar'),
                 Tables\Actions\DeleteAction::make()
+                ->modalHeading('Tem certeza?')
+                ->modalDescription('Essa ação não pode ser desfeita.')
+                ->modalButton('Excluir')
+                ->modalWidth('md') // ✅ Correção: Usando o enum corretamente
                 ->label('')
                 ->tooltip('Excluir'),
             ])

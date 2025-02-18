@@ -27,7 +27,7 @@ class Dividendo extends Model
     {
         return $this->hasOne(Ativo::class,  'id','id_ativo');
     }
-   /* protected function valor_dividendo(): Attribute{
+    protected function valor_dividendo(): Attribute{
         return Attribute::make(
             get: fn ($value) => str_replace(".", ",", $value),
             set: fn ( $value) =>
@@ -54,5 +54,5 @@ class Dividendo extends Model
                     'valor_total' => str_replace(",", ".", str_replace(".", "", $value)),
                 ],
             );
-    }*/
+    }
 }

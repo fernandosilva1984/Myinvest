@@ -96,13 +96,6 @@ class OperacaoResource extends Resource
                 ->columnSpan(3),
             ]);
     }
-// Função auxiliar para calcular o valor total
-private static function calcularValorTotal(Get $get, Set $set)
-{
-    $qtd = floatval($get('qtd') ?? 0);
-    $valorUnitario = floatval($get('valor_unitario') ?? 0);
-    $set('valor_total', $qtd * $valorUnitario);
-}
     public static function table(Table $table): Table
     {
         return $table
@@ -152,7 +145,7 @@ private static function calcularValorTotal(Get $get, Set $set)
 
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
@@ -165,13 +158,13 @@ private static function calcularValorTotal(Get $get, Set $set)
                 ->modalHeading('Tem certeza?')
                 ->modalDescription('Essa ação não pode ser desfeita.')
                 ->modalButton('Excluir')
-                ->modalWidth(MaxWidth::Large) // ✅ Correção: Usando o enum corretamente
+                ->modalWidth('md') // ✅ Correção: Usando o enum corretamente
                 ->label('')
                 ->tooltip('Excluir'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -192,4 +185,11 @@ private static function calcularValorTotal(Get $get, Set $set)
             'edit' => Pages\EditOperacao::route('/{record}/edit'),
         ];
     }
+    /*public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }*/
 }

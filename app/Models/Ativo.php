@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Ativo extends Model
 {
@@ -71,6 +72,19 @@ class Ativo extends Model
             $saida = $this->hasOne(Cotacao::class,'id_ativo')->select('id_ativo', DB::raw('valor'))->latest();
 
               return $saida;
+        }
+        // Relacionamento com o model Operacao
+        public function operacoes(): HasMany
+        {
+            return $this->hasMany(Operacao::class,  'id_ativo');
+        }
+            // Função para calcular o saldo das operações
+        public function saldoOperacoes(): int
+        {
+            $compras = $this->operacoes()->where('tipo', 'C')->sum('qtd');
+            $vendas = $this->operacoes()->where('tipo', 'V')->sum('qtd');
+        
+            return $compras - $vendas;
         }
 
 }
