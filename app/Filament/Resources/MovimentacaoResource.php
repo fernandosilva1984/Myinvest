@@ -36,7 +36,7 @@ class MovimentacaoResource extends Resource
                     ->searchable()
 
                     ->options((
-                    Carteira::all()->sortBy('Nome')->pluck('Nome','id')->toArray()
+                    Carteira::all()->sortBy('Nome')->where('status',1)->pluck('Nome','id')->toArray()
                 )),
                 Forms\Components\DatePicker::make('data')
                     ->label('Data')
@@ -69,6 +69,7 @@ class MovimentacaoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
         ->striped()
             ->defaultSort('data','desc')
             ->groups([

@@ -98,7 +98,7 @@ class segmentoAtivoSeeder extends Seeder
             'SegmentoAtivo'=>'Seguros',
         ]);
         segmentoAtivo::create([
-            //21
+            //22
             'SegmentoAtivo'=>'Fundo de Investimento MM',
         ]);
     }

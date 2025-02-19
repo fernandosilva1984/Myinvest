@@ -50,6 +50,7 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
         ->columns([
             Tables\Columns\TextColumn::make('name')
             ->label(label: 'Nome Completo'),

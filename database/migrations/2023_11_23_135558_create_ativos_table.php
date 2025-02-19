@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('Ticket')->unique();
             $table->string('Razao_Social');
             $table->string('CNPJ')->unique();
-            $table->decimal('Valor_mercado', 15,2);
-            $table->decimal('Valor_patrimonio', 15,2);
-            $table->decimal('qtd_cotas',15,0);
+          //  $table->decimal('Valor_mercado', 15,2);
+            $table->decimal('Valor_patrimonio', 20,2);
+            $table->biginteger('qtd_cotas');
             $table->decimal('qtd_meta',15,0);
-            $table->decimal('Valor_PCota', 15,2);
+            //$table->decimal('Valor_PCota', 15,2);
             $table->unsignedBigInteger('id_tipo');
             $table->unsignedBigInteger('id_segmento');
             $table->boolean('status')->default(TRUE);

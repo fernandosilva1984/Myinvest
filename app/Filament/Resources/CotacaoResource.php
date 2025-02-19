@@ -37,7 +37,7 @@ class CotacaoResource extends Resource
                 ->required()
                 ->searchable()
                 ->options((
-                Ativo::all()->sortBy('Ticket')->pluck('Ticket','id')->toArray()
+                Ativo::all()->sortBy('Ticket')->where('status',1)->pluck('Ticket','id')->toArray()
                 )),
                 Forms\Components\DateTimePicker::make('data_hora')
                 ->label('Data/Hora')
@@ -57,6 +57,7 @@ class CotacaoResource extends Resource
         return $table
         ->striped()
         ->defaultSort('data_hora','desc')
+        ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
 
        /* ->groups([
         /*    Group::make('ativo.Ticket')

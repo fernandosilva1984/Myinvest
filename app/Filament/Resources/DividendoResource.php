@@ -13,6 +13,8 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Grouping\Group;
@@ -22,7 +24,7 @@ use Filament\Forms\Components\Grid;
 use Leandrocfe\FilamentPtbrFormFields\Money;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Forms\Components\TextInput;
+
 
 class DividendoResource extends Resource
 {
@@ -40,56 +42,44 @@ class DividendoResource extends Resource
                 Grid::make()
 
                 ->schema([
-                Forms\Components\Select::make('id_ativo')
+                Select::make('id_ativo')
                 ->label('Ativo')
                 ->required(false)
                 ->searchable()
                 ->options((
-                    Ativo::all()->sortBy('Ticket')->pluck('Ticket','id')->toArray()
+                    Ativo::all()->sortBy('Ticket')->where('status',1)->pluck('Ticket','id')->toArray()
                 )),
-               
-                    Money::make('valor_dividendo')
+                TextInput::make('valor_dividendo')
                     ->label('Dividendo')
                     ->required()
                     ->prefix('R$'),
-                    Money::make('valor_jcp')
+                TextInput::make('valor_jcp')
                     ->label('JCP/Amort')
                     ->prefix('R$')
-                    
-                  /*  ->formatStateUsing(function ($state) {
-                        // Substitui vírgula por ponto
-                        return str_replace(',', '.', $state);
-                    })*/
-                                      //  ->currencyMask(thousandSeparator: '.',decimalSeparator: ',', precision: 2)
+
                     ->reactive(),
-                
-                    Forms\Components\DatePicker::make('data_ref')
-                    // ->native(false)
-                    // ->displayFormat('m/Y')
+
+                   DatePicker::make('data_ref')
+
                      ->label('Periodo de Ref')
                      ->required(),
-                Forms\Components\DatePicker::make('data_com')
+                DatePicker::make('data_com')
                     ->label('Data Com')
-                    ->live(debounce: 1500) // Atualiza automaticamente
+                    ->live(debounce: 500) // Atualiza automaticamente
                     ->afterStateUpdated(function (Get $get, Set $set) {
                         $dividendo =  floatval(str_replace(',', '.',$get('valor_dividendo') ?? 0)); // Converte para número
                         $jcp = floatval(str_replace(',', '.', $get('valor_jcp') ?? 0));
                         $set('valor_total', $dividendo + $jcp);
                     })
                     ->required(),
-                Forms\Components\DatePicker::make('data_pag')
+                DatePicker::make('data_pag')
                     ->label('Data de Pagamento')
                     ->required(),
-                    TextInput::make('valor_total')
-                    ->disabled()
-                    ->prefix('R$')
-                    ->mask((fn (TextInput\Mask $mask) => $mask->money(prefix: 'R$', thousandsSeparator: '.', decimalSeparator: ',')))
-                    ->formatStateUsing(function ($state) {
-                        // Substitui vírgula por ponto
-                        return str_replace(',', '.', $state);
-                    }),
 
-                Forms\Components\TextInput::make('obs')
+                Money::make('valor_total')
+                    ->disabled()
+                    ->prefix('R$'),
+                TextInput::make('obs')
                     ->label('Observação')
                     ->columnSpan(3),
             ])
@@ -101,6 +91,7 @@ class DividendoResource extends Resource
     {
         return $table
         ->striped()
+        ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
         ->defaultSort('data_ref','desc')
             ->groups([
                 Group::make('ativo.Ticket')

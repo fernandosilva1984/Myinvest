@@ -18,7 +18,7 @@ class SegmentoAtivoResource extends Resource
     protected static ?string $model = SegmentoAtivo::class;
     protected static ?string $navigationGroup = 'Cadastros';
     protected static ?int $navigationSort = 9;
-    
+
     protected static ?string $navigationLabel = 'Segmentos';
 
     protected static ?string $navigationIcon = 'heroicon-m-server-stack';
@@ -39,6 +39,7 @@ class SegmentoAtivoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
             ->columns([
                 Tables\Columns\TextColumn::make('segmentoAtivo')
                     ->searchable(),

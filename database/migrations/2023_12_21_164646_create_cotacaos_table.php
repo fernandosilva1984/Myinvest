@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_ativo');
             $table->datetime('data_hora')->default(DB::raw('current_timestamp'));
-            $table->decimal('valor', 15,2);
+            $table->decimal('valor', 20,10);
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('id_ativo')->references('id')->on('ativos');

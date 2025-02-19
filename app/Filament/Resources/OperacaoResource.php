@@ -11,6 +11,8 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\TextInputmask;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -41,28 +43,28 @@ class OperacaoResource extends Resource
                 Grid::make()
 
                 ->schema([
-                    Forms\Components\Select::make('id_carteira')
+                    Select::make('id_carteira')
                         ->label('Carteira')
                         ->required()
                         ->searchable()
                         ->options((
-                        Carteira::all()->sortBy('Nome')->pluck('Nome','id')->toArray()
+                        Carteira::all()->sortBy('Nome')->where('status',1)->pluck('Nome','id')->toArray()
                         )),
                     Forms\Components\Select::make('id_ativo')
                         ->label('Ativo')
                         ->required()
                         ->searchable()
                         ->options((
-                        Ativo::all()->sortBy('Ticket')->pluck('Ticket','id')->toArray()
+                        Ativo::all()->sortBy('Ticket')->where('status',1)->pluck('Ticket','id')->toArray()
                         )),
                     Forms\Components\DatePicker::make('data')
                         ->label('Data')
                         ->required(),
-                   Forms\Components\TextInput::make('qtd')
+                    TextInput::make('qtd')
                         ->label('Quantidade')
                         //->live(debounce: 1)
                         ->numeric(),
-                        Money::make('valor_unitario')
+                    TextInput::make('valor_unitario')
                         ->label('Valor Unitário')
                         ->live(debounce: 500) // Atualiza automaticamente
                         ->afterStateUpdated(function (Get $get, Set $set) {
@@ -100,6 +102,7 @@ class OperacaoResource extends Resource
     {
         return $table
             ->striped()
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
             ->defaultSort('data','desc')
             ->groups([
                 Group::make('carteira.Nome')

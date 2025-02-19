@@ -74,18 +74,18 @@ class AtivoResource extends Resource
                     ->maxLength(255)
                     ->label(label: 'Meta de cotas')
                     ->required(),
-                    Money::make('Valor_mercado')
+                  /*  Money::make('Valor_mercado')
                     ->label(label: 'Valor de mercado')
                     ->prefix('R$')
-                    ->required(),
+                    ->required(),*/
                     Money::make('Valor_patrimonio')
                     ->label(label: 'Valor Patrimonial')
                     ->prefix('R$')
                     ->required(),
-                    Money::make('Valor_PCota')
+                   /* Money::make('Valor_PCota')
                     ->label(label: 'Cotação Atual')
                     ->prefix('R$')
-                    ->required(),
+                    ->required(),*/
                 Forms\Components\Toggle::make('status')
                     ->required(),
                 ])
@@ -96,6 +96,7 @@ class AtivoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        //->defaultPaginationPageOption(25)
         ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
         ->groups([
             Group::make('tipoAtivo.tipoAtivo')
@@ -130,7 +131,7 @@ class AtivoResource extends Resource
                     ->label(label: 'Valor patrimonial')
                     ->money('brl'),
                     Tables\Columns\TextColumn::make('saldo_operacoes')
-                    ->label('QTD Cotas')
+                    ->label('Qtd. Cotas')
                     ->getStateUsing(function ($record) {
                         // Chama a função saldoOperacoes do model Ativo
                         return $record->saldoOperacoes();
