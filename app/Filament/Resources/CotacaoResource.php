@@ -42,7 +42,7 @@ class CotacaoResource extends Resource
                 Forms\Components\DateTimePicker::make('data_hora')
                 ->label('Data/Hora')
                 ->required(),
-                MoneyTextInput::make('valor')
+                TextInput::make('valor')
                 ->required()
                 ->label('Valor')
                 ->prefix('R$'),
