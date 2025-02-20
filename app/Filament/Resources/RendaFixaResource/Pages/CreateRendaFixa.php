@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateRendaFixa extends CreateRecord
 {
     protected static string $resource = RendaFixaResource::class;
+    protected static ?string $title = 'Nova Aplicação';
 }

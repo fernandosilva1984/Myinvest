@@ -9,11 +9,13 @@ use Filament\Resources\Pages\ListRecords;
 class ListRendaFixas extends ListRecords
 {
     protected static string $resource = RendaFixaResource::class;
+    protected static ?string $title = 'Aplicações em Renda Fixa';
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Nova Aplicação'),
         ];
     }
 }

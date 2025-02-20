@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('UF');
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
-            
             $table->timestamps();
         });
     }

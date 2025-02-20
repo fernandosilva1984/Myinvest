@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('renda_fixas', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_ativo');
+            $table->unsignedBigInteger('id_banco_emissor');
+            $table->unsignedBigInteger('id_banco_gestor');
             $table->string('descrição');
-            $table->date('data_aplicacao')->nullable();
+            $table->date('data_aplicacao');
+            $table->int('prazo');
             $table->date('data_venc');
             $table->decimal('valor_aplic', 15,2)->nullable();
             $table->decimal('iof', 15,2);
@@ -23,13 +27,10 @@ return new class extends Migration
             $table->decimal('taxa', 15,2);
             $table->decimal('taxa_rent', 15,2);
             $table->string('conta');
-            $table->unsignedBigInteger('id_tipo');
-            $table->unsignedBigInteger('id_banco_emissor');
-            $table->unsignedBigInteger('id_banco_gestor');
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('id_tipo')->references('id')->on('ativos');
+            $table->foreign('id_ativo')->references('id')->on('ativos');
             $table->foreign('id_banco_emissor')->references('id')->on('bancos');
             $table->foreign('id_banco_gestor')->references('id')->on('bancos');
         });

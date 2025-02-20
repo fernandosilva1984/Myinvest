@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewBanco extends ViewRecord
 {
     protected static string $resource = BancoResource::class;
+    protected static ?string $title = 'Visualizar Bancos';
 
     protected function getHeaderActions(): array
     {

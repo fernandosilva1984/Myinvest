@@ -12,39 +12,53 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
 
 class BancoResource extends Resource
 {
     protected static ?string $model = Banco::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Cadastros';
+    protected static ?int $navigationSort = 10;
+
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nome')
+                TextInput::make('nome')
+                    ->label(label: 'Nome')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('razao_social')
+                TextInput::make('razao_social')
+                    ->label(label: 'Razão Social')
+                    ->columnSpan(3)
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('CNPJ')
+                TextInput::make('CNPJ')
+                    ->label(label: 'CNPJ')
+                    ->mask('99.999.999/9999-99')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('logradouro')
+                TextInput::make('logradouro')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('bairro')
+                TextInput::make('bairro')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('cidade')
+                TextInput::make('cidade')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('UF')
+                TextInput::make('UF')
+                    ->label(label: 'UF')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('status')
+                Toggle::make('status')
                     ->required(),
             ]);
     }
@@ -52,42 +66,38 @@ class BancoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
             ->columns([
-                Tables\Columns\TextColumn::make('nome')
+                TextColumn::make('nome')
+                    ->label(label: 'Nome')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('razao_social')
+                TextColumn::make('razao_social')
+                    ->label(label: 'Razão Social')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('CNPJ')
+                TextColumn::make('CNPJ')
+                    ->label(label: 'CNPJ')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('logradouro')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('bairro')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('cidade')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('UF')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('status')
+                IconColumn::make('status')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                ->label('')
+                ->tooltip('Visualizar'),
+                Tables\Actions\EditAction::make()
+                ->label('')
+                ->tooltip('Editar'),
+                Tables\Actions\DeleteAction::make()
+                ->modalHeading('Tem certeza?')
+                ->modalDescription('Essa ação não pode ser desfeita.')
+                ->modalButton('Excluir')
+                ->modalWidth('md') // ✅ Correção: Usando o enum corretamente
+                ->label('')
+                ->tooltip('Excluir'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
