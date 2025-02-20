@@ -17,7 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_banco_emissor');
             $table->unsignedBigInteger('id_banco_gestor');
             $table->string('descrição');
-            $table->date('data_aplicacao')->nullable();
+            $table->date('data_aplicacao');
+            $table->int('prazo');
             $table->date('data_venc');
             $table->decimal('valor_aplic', 15,2)->nullable();
             $table->decimal('iof', 15,2);

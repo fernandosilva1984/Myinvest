@@ -14,6 +14,7 @@ class RendaFixa extends Model
         'id_ativo',
         'descrição',
         'data_aplicacao',
+        'prazo',
         'data_venc',
         'valor_aplic',
         'iof',

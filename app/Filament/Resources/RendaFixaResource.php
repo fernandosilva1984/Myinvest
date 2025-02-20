@@ -71,7 +71,6 @@ class RendaFixaResource extends Resource
                 Banco::all()->sortBy('nome')->where('status',1)->pluck('nome','id')->toArray() ))
                     ->required(),
                 Money::make('valor_aplic')
-
                     ->label( 'Valor da Aplicação')
                     ->prefix('R$')
                     ->required(),
