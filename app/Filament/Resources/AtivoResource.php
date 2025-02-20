@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use App\Filament\Resources\AtivoResource\Pages;
 use App\Filament\Resources\AtivoResource\RelationManagers;
 use App\Models\Ativo;
@@ -34,21 +36,21 @@ class AtivoResource extends Resource
                 Grid::make()
 
                 ->schema([
-                Forms\Components\TextInput::make('Ticket')
+                TextInput::make('Ticket')
                    ->required()
                    ->columnSpan(1)
                    ->maxLength(255),
-                Forms\Components\TextInput::make('Razao_Social')
+                TextInput::make('Razao_Social')
                     ->label(label: 'Razão Social')
                     ->columnSpan(3)
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('CNPJ')
+                TextInput::make('CNPJ')
                     ->label(label: 'CNPJ')
                     ->mask('99.999.999/9999-99')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\Select::make('id_tipo')
+                Select::make('id_tipo')
                     ->label('Tipo')
                     ->required()
                     ->searchable()
@@ -56,7 +58,7 @@ class AtivoResource extends Resource
                     tipoAtivo::all()->sortBy('tipoAtivo')->pluck('tipoAtivo','id')->toArray()
                     ))
                     ->required(),
-                    Forms\Components\Select::make('id_segmento')
+                Select::make('id_segmento')
                     ->label('Segmento')
                     ->required()
                     ->searchable()
@@ -64,21 +66,18 @@ class AtivoResource extends Resource
                     segmentoAtivo::all()->sortBy('segmentoAtivo')->pluck('segmentoAtivo','id')->toArray()
                     ))
                     ->required(),
-                Forms\Components\TextInput::make('qtd_cotas')
+                TextInput::make('qtd_cotas')
                     ->numeric()
                     ->maxLength(255)
                     ->label(label: 'Quantidade de cotas')
                     ->required(),
-                    Forms\Components\TextInput::make('qtd_meta')
+                TextInput::make('qtd_meta')
                     ->numeric()
                     ->maxLength(255)
                     ->label(label: 'Meta de cotas')
                     ->required(),
-                  /*  Money::make('Valor_mercado')
-                    ->label(label: 'Valor de mercado')
-                    ->prefix('R$')
-                    ->required(),*/
-                    Money::make('Valor_patrimonio')
+
+                 Money::make('Valor_patrimonio')
                     ->label(label: 'Valor Patrimonial')
                     ->prefix('R$')
                     ->required(),
@@ -86,7 +85,7 @@ class AtivoResource extends Resource
                     ->label(label: 'Cotação Atual')
                     ->prefix('R$')
                     ->required(),*/
-                Forms\Components\Toggle::make('status')
+                Toggle::make('status')
                     ->required(),
                 ])
                 ->columns(4)

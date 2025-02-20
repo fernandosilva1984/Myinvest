@@ -9,11 +9,13 @@ use Filament\Resources\Pages\ListRecords;
 class ListBancos extends ListRecords
 {
     protected static string $resource = BancoResource::class;
+    protected static ?string $title = 'Bancos';
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Novo Banco'),
         ];
     }
 }

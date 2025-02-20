@@ -11,7 +11,7 @@ class RendaFixa extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'id',
-        'id_tipo',
+        'id_ativo',
         'descrição',
         'data_aplicacao',
         'data_venc',

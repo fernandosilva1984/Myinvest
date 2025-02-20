@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             tipoAtivoSeeder::class,
             segmentoAtivoSeeder::class,
             BancoTableSeeder::class,
+            ConfiguracaoTableSeeder::class,
            // AtivoTableSeeder::class,
            // DividendoTableSeeder::class,
            // OperacaoTableSeeder::class,

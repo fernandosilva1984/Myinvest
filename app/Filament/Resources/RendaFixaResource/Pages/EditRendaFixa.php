@@ -9,6 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditRendaFixa extends EditRecord
 {
     protected static string $resource = RendaFixaResource::class;
+    protected static ?string $title = 'Editar Aplicação';
 
     protected function getHeaderActions(): array
     {

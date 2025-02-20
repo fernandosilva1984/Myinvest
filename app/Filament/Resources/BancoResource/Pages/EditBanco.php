@@ -9,6 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditBanco extends EditRecord
 {
     protected static string $resource = BancoResource::class;
+    protected static ?string $title = 'Editar Banco';
 
     protected function getHeaderActions(): array
     {

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bancos', function (Blueprint $table) {
             $table->id();
+            $table->string('nome');
             $table->string('razao_social');
             $table->string('CNPJ')->unique();
             $table->string('logradouro');
@@ -21,7 +22,6 @@ return new class extends Migration
             $table->string('UF');
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
-            
             $table->timestamps();
         });
     }
