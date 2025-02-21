@@ -1,0 +1,84 @@
+// criar o projeto com composer
+
+composer create-project "laravel/laravel:^10.0" example-app
+
+// Acessando a pasta do projeto
+
+cd example-app
+
+// iniciando o artisan serve
+
+php artisan serve
+
+// acessando o projeto no navegador
+
+
+http://localhost:8000
+
+// acessando o codigo do projeto no VSCode
+
+code .
+
+// configurando o arquivo .env
+
+DB_CONNECTION=sqlite 
+DB_CONNECTION=mysql 
+DB_HOST=127.0.0.1 
+DB_PORT=3306 
+DB_DATABASE="data_base" 
+DB_USERNAME="user_data_base"
+DB_PASSWORD= "password"
+
+// Criando a base de dados
+
+php artisan migrate
+
+// Instalando o filament panel
+
+composer require filament/filament:"^3.0" -W
+ 
+php artisan filament:install --panels
+
+// Criando usuario com filament
+
+php artisan make:filament-user
+
+//Acessando a pagina de login do projeto 
+
+http://localhost:8000/admin
+
+// Criando o model de tabela para o banco de dados
+
+php artisan make:model Tabela -m
+* php artisan: Uso do PHP para execução do artisan do Laravel
+* make:model: Uso do artisan para criar um model
+* Tabela: Nome do Model
+* -m: Flag para criação de uma migration para esse model
+
+// Configurar os campos da tabela no Model
+
+// incluir o softdeletes no model
+Dentro do aquivo do model incluir
+
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class "Tabela extends Model
+{
+ 
+    // Ativação do recurso
+    use SoftDeletes;
+}
+
+// Configurar o migrate para os campos da tabela
+
+// incluir no esquema dos campos da tabela
+$table->softDeletes();
+
+
+
+// Criando o resource/ paginas
+
+php artisan make:filament-resource Model/tabela --generate --soft-deletes --view
+
+
+
