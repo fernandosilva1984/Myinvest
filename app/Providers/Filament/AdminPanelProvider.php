@@ -3,7 +3,6 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\Login;
-use App\Filament\Pages\Auth\EditProfile;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -30,18 +29,13 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
-         //   ->registration()
-           // ->passwordReset()
-            ->emailVerification()
-            ->profile()
             ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::hex('#014bde'),
             ])
             ->font('Nunito')
-            //->brandLogo(url('/img/icon.png'))
-          //  ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
@@ -73,12 +67,9 @@ class AdminPanelProvider extends PanelProvider
                 ->label('Relatórios')
                 //->icon('heroicon-o-shopping-cart'),
             ])
-           // adicionar o menu no top do site
-            //->topNavigation()
             ->authMiddleware([
                 Authenticate::class,
             ])
-
             ->favicon(asset('img/icon.ico'));
     }
 }
