@@ -24,7 +24,7 @@ use Leandrocfe\FilamentPtbrFormFields\Money;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Forms\Components\Modal;
-use Filament\Support\Enums\MaxWidth;
+//use Filament\Support\Enums\MaxWidth;
 //use Filament\Forms\Components\Money;
 
 class OperacaoResource extends Resource

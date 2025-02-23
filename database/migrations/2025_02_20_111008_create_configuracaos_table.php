@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('configuracaos', function (Blueprint $table) {
             $table->id();
             $table->decimal('CDI_atual', 5,2);
+            $table->decimal('SELIC_atual', 5,2);
             $table->decimal('Corretagem_acoes', 10,7);
             $table->decimal('Corretagem_fii', 10,7);
             $table->decimal('Corretagem_criptos', 10,7);

@@ -16,9 +16,11 @@ class ConfiguracaoTableSeeder extends Seeder
 
     public function run(): void
     {
-        Configuracaos::create([
+
+        Configuracao::create([
             //01
             'CDI_atual'=>'13.15',
+            'SELIC_atual'=>'13.50',
             'Corretagem_acoes'=>'0.030589',
             'Corretagem_fii'=>'0.030589',
             'Corretagem_Criptos'=>'1.52',

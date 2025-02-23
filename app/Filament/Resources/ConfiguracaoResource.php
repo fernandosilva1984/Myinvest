@@ -26,6 +26,10 @@ class ConfiguracaoResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('SELIC_atual')
+                    ->label('Taxa SELIC  %')
+                    ->required()
+                    ->numeric(),
                 Forms\Components\TextInput::make('CDI_atual')
                     ->label('CDI Atual %')
                     ->required()
@@ -48,7 +52,12 @@ class ConfiguracaoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->paginated(false)
             ->columns([
+                Tables\Columns\TextColumn::make('SELIC_atual')
+                    ->label('Taxa SELIC %')
+                    ->suffix('%')
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('CDI_atual')
                     ->label('CDI Atual %')
                     ->suffix('%')

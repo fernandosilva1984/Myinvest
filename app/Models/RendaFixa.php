@@ -22,8 +22,9 @@ class RendaFixa extends Model
         'indice',
         'taxa',
         'taxa_rent',
-        'banco_emissor',
-        'banco_gestor',
+        'id_banco_emissor',
+        'id_banco_gestor',
+        'id_carteira',
         'conta',
         'status'
         ];

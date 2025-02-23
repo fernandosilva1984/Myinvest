@@ -7,11 +7,13 @@ use App\Filament\Resources\RendaFixaResource\RelationManagers;
 use App\Models\RendaFixa;
 use App\Models\Ativo;
 use App\Models\Banco;
+use App\Models\Carteira;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Grouping\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
@@ -37,6 +39,14 @@ class RendaFixaResource extends Resource
             ->schema([
                 Grid::make()
                 ->schema([
+                Select::make('id_carteira')
+                   // ->columnSpan(1)
+                    ->label('Carteira')
+                    ->required()
+                    ->searchable()
+                    ->options((
+                Carteira::all()->sortBy('Nome')->where('status',1)->pluck('Nome','id')->toArray() ))
+                    ->required(),
                 Select::make('id_ativo')
                     ->columnSpan(1)
                     ->label('Tipo')
@@ -47,12 +57,17 @@ class RendaFixaResource extends Resource
                     ->required(),
                 TextInput::make('descrição')
                     ->columnSpan(3)
-                    ->label( 'Descrição')
+                    ->label('Descrição')
                     ->required()
                     ->maxLength(255),
                 DatePicker::make('data_aplicacao')
                     ->label('Data da Aplicação')
                     ->required(),
+                TextInput::make('prazo')
+                    ->label( 'Prazo da Aplicação (Dias)')
+                    ->required()
+                    ->suffix('%')
+                    ->numeric(),
                 DatePicker::make('data_venc')
                     ->label( 'Vencimento')
                     ->required(),
@@ -61,14 +76,14 @@ class RendaFixaResource extends Resource
                     ->required()
                     ->searchable()
                     ->options((
-                Banco::all()->sortBy('nome')->where('status',1)->pluck('nome','id')->toArray() ))
+                        Banco::all()->sortBy('nome')->where('status',1)->pluck('id','id')->toArray() ))
                     ->required(),
-                    Select::make('id_banco_gestor')
+                Select::make('id_banco_gestor')
                     ->label('Banco Gestor')
                     ->required()
                     ->searchable()
                     ->options((
-                Banco::all()->sortBy('nome')->where('status',1)->pluck('nome','id')->toArray() ))
+                        Banco::all()->sortBy('nome')->where('status',1)->pluck('nome','id')->toArray() ))
                     ->required(),
                 Money::make('valor_aplic')
                     ->label( 'Valor da Aplicação')
@@ -97,45 +112,61 @@ class RendaFixaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->striped()
+        ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
+        ->defaultSort('data_aplicacao','desc')
+        ->groups([
+            Group::make('carteira.Nome')
+            ->label('Carteira')
+            ->collapsible()
+            ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('Nome', $direction)),
+        ])
+        ->groups([
+            Group::make('ativo.Ticket')
+            ->label('Ativo')
+            ->collapsible()
+            ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('Ticket', $direction)),
+        ])
+        ->groups([
+            Group::make('banco.nome')
+            ->label('Banco')
+            ->collapsible()
+            ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('Nome', $direction)),
+        ])
             ->columns([
-                Tables\Columns\TextColumn::make('id_tipo')
+                Tables\Columns\TextColumn::make('carteira.Nome')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('id_banco_emissor')
+                    Tables\Columns\TextColumn::make('data_aplicacao')
+                    ->date($format = 'd/m/y')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('ativo.Ticket')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('id_banco_gestor')
-                    ->numeric()
-                    ->sortable(),
+                
                 Tables\Columns\TextColumn::make('descrição')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('data_aplicacao')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('data_venc')
-                    ->date()
-                    ->sortable(),
+                
                 Tables\Columns\TextColumn::make('valor_aplic')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->money('brl'),
                 Tables\Columns\TextColumn::make('iof')
                     ->numeric()
+                    ->money('brl')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ir')
                     ->numeric()
+                    ->money('brl')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('indice')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('taxa')
+                    Tables\Columns\TextColumn::make('banco.nome')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('taxa_rent')
-                    ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('conta')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('status')
-                    ->boolean(),
             ])
             ->filters([
                 //

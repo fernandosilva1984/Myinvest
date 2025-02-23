@@ -16,23 +16,25 @@ return new class extends Migration
             $table->unsignedBigInteger('id_ativo');
             $table->unsignedBigInteger('id_banco_emissor');
             $table->unsignedBigInteger('id_banco_gestor');
+            $table->unsignedBigInteger('id_carteira');
             $table->string('descrição');
             $table->date('data_aplicacao');
-            $table->int('prazo');
-            $table->date('data_venc');
-            $table->decimal('valor_aplic', 15,2)->nullable();
-            $table->decimal('iof', 15,2);
-            $table->decimal('ir', 15,2);
-            $table->string('indice');
-            $table->decimal('taxa', 15,2);
-            $table->decimal('taxa_rent', 15,2);
-            $table->string('conta');
+            $table->int('prazo')->nullable();
+            $table->date('data_venc')->nullable();
+            $table->decimal('valor_aplic', 15,2);
+            $table->decimal('iof', 15,2)->nullable();
+            $table->decimal('ir', 15,2)->nullable();
+            $table->string('indice')->nullable();
+            $table->decimal('taxa', 15,2)->nullable();
+            $table->decimal('taxa_rent', 15,2)->nullable();
+            $table->string('conta')->nullable();
             $table->boolean('status')->default(TRUE);
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('id_ativo')->references('id')->on('ativos');
             $table->foreign('id_banco_emissor')->references('id')->on('bancos');
             $table->foreign('id_banco_gestor')->references('id')->on('bancos');
+            $table->foreign('id_crtira')->references('id')->on('carteiras');
         });
     }
 

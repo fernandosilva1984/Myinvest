@@ -12,6 +12,7 @@ class Configuracao extends Model
     protected $fillable = [
         'id',
         'CDI_atual',
+        'SELIC_atual',
         'Corretagem_acoes',
         'Corretagem_fii',
         'Corretagem_Criptos'
