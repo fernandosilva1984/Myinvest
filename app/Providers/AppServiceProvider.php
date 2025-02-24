@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Registra o Observer
+    Operacao::observe(OperacaoObserver::class);
     }
 }
