@@ -12,6 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        $schedule->command('rendafixa:atualizar')
+            ->daily() // Executa todos os dias
+            ->at('07:00'); // Define o horário de execução (ajuste conforme necessário)
         // $schedule->command('inspire')->hourly();
     }
 

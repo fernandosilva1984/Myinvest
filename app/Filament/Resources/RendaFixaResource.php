@@ -11,6 +11,7 @@ use App\Models\Carteira;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Carbon\Carbon;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Grouping\Group;
@@ -24,6 +25,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use Leandrocfe\FilamentPtbrFormFields\Money;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 
 class RendaFixaResource extends Resource
 {
@@ -40,7 +43,7 @@ class RendaFixaResource extends Resource
                 Grid::make()
                 ->schema([
                 Select::make('id_carteira')
-                   // ->columnSpan(1)
+                    ->columnSpan(2)
                     ->label('Carteira')
                     ->required()
                     ->searchable()
@@ -48,7 +51,7 @@ class RendaFixaResource extends Resource
                 Carteira::all()->sortBy('Nome')->where('status',1)->pluck('Nome','id')->toArray() ))
                     ->required(),
                 Select::make('id_ativo')
-                    ->columnSpan(1)
+                    ->columnSpan(2)
                     ->label('Tipo')
                     ->required()
                     ->searchable()
@@ -56,56 +59,84 @@ class RendaFixaResource extends Resource
                 Ativo::all()->sortBy('Ticket')->where('status',1)->where('id_tipo',3)->pluck('Ticket','id')->toArray() ))
                     ->required(),
                 TextInput::make('descrição')
-                    ->columnSpan(3)
+                    ->columnSpan(6)
                     ->label('Descrição')
                     ->required()
                     ->maxLength(255),
                 DatePicker::make('data_aplicacao')
+                    ->columnSpan(2)
                     ->label('Data da Aplicação')
                     ->required(),
                 TextInput::make('prazo')
-                    ->label( 'Prazo da Aplicação (Dias)')
+                    ->columnSpan(2)
+                    ->label( 'Prazo da Aplicação')
+                    ->required()
+                    ->suffix('Dias')
+                    ->numeric()
+                    ->live(debounce: 1000) // Torna o campo reativo para escutar mudanças
+                    ->afterStateUpdated(function ($state, $set) {
+                        // Quando o prazo é alterado, recalcula a data de vencimento
+                        $dataAplicacao = request('data_aplicacao');
+                            $dataVenc = Carbon::parse($dataAplicacao)->addDays($state);
+                            $set('data_venc', $dataVenc->format('Y-m-d'));
+                    }),
+                DatePicker::make('data_venc')
+                    ->columnSpan(2)
+                    ->label( 'Vencimento')
+                    ->required(),
+                TextInput::make('valor_aplic')
+                    ->columnSpan(2)
+                    ->label( 'Valor da Aplicação')
+                    ->prefix('R$')
+                    ->live(debounce: 1500) // Torna o campo reativo para escutar mudanças
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        // Quando o prazo é alterado, recalcula a data de vencimento
+                        //$valor_Aplicacao = floatval(str_replace(',', '.', $get('valor_aplic') ?? 0));
+                     //   $valorUnitario = floatval(str_replace(',', '.', $get('valor_unitario') ?? 0));
+                            $set('valor_atual', $get('valor_aplic'));
+                            })
+                    ->required(),
+                TextInput::make('valor_atual')
+                   ->columnSpan(2)
+                   ->readonly(),
+                    //->hidden(),
+                    TextInput::make('taxa')
+                    ->columnSpan(2)
+                    ->label( 'Taxa de ref.')
                     ->required()
                     ->suffix('%')
                     ->numeric(),
-                DatePicker::make('data_venc')
-                    ->label( 'Vencimento')
-                    ->required(),
+                TextInput::make('taxa_rent')
+                    ->columnSpan(2)
+                    ->label( 'Rentabilidade')
+                    ->required()
+                    ->suffix('%')
+                    ->numeric(),
                 Select::make('id_banco_emissor')
+                    ->columnSpan(2)
                     ->label('Banco Emissor')
                     ->required()
                     ->searchable()
                     ->options((
-                        Banco::all()->sortBy('nome')->where('status',1)->pluck('id','id')->toArray() ))
+                        Banco::all()->sortBy('nome')->where('status',1)->pluck('nome','id')->toArray() ))
                     ->required(),
                 Select::make('id_banco_gestor')
+                    ->columnSpan(2)
                     ->label('Banco Gestor')
                     ->required()
                     ->searchable()
                     ->options((
                         Banco::all()->sortBy('nome')->where('status',1)->pluck('nome','id')->toArray() ))
                     ->required(),
-                Money::make('valor_aplic')
-                    ->label( 'Valor da Aplicação')
-                    ->prefix('R$')
-                    ->required(),
-                TextInput::make('taxa')
-                    ->label( 'Taxa de referência')
-                    ->required()
-                    ->suffix('%')
-                    ->numeric(),
-                TextInput::make('taxa_rent')
-                    ->label( 'Rentabilidade')
-                    ->required()
-                    ->suffix('%')
-                    ->numeric(),
                 TextInput::make('conta')
+                    ->columnSpan(2)
                     ->required()
                     ->maxLength(255),
                 Toggle::make('status')
+                    ->default(true)
                     ->required(),
             ])
-            ->columns(6)
+            ->columns(10)
             ]);
     }
 
@@ -128,7 +159,7 @@ class RendaFixaResource extends Resource
             ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('Ticket', $direction)),
         ])
         ->groups([
-            Group::make('banco.nome')
+            Group::make('banco_Emissor.nome')
             ->label('Banco')
             ->collapsible()
             ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('Nome', $direction)),
@@ -138,33 +169,49 @@ class RendaFixaResource extends Resource
                     ->numeric()
                     ->searchable()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('data_aplicacao')
+                Tables\Columns\TextColumn::make('data_aplicacao')
+                    ->label('Data Aplic.')
                     ->date($format = 'd/m/y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ativo.Ticket')
                     ->numeric()
                     ->searchable()
                     ->sortable(),
-                
-                Tables\Columns\TextColumn::make('descrição')
-                    ->searchable(),
-                
+                /*Tables\Columns\TextColumn::make('descrição')
+                    ->searchable(),*/
                 Tables\Columns\TextColumn::make('valor_aplic')
+                    ->label('Valor Aplic.')
                     ->numeric()
                     ->sortable()
                     ->money('brl'),
                 Tables\Columns\TextColumn::make('iof')
+                    ->label('IOF')
                     ->numeric()
                     ->money('brl')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ir')
+                    ->label('IR')
                     ->numeric()
                     ->money('brl')
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('banco.nome')
+                Tables\Columns\TextColumn::make('valor_atual')
+                    ->label('Valor Bruto')
+                    ->numeric()
+                    ->sortable()
+                    ->money('brl'),
+                    Tables\Columns\TextColumn::make('valor_aliquido')
+                    ->label('Valor líquido')
+                    ->numeric()
+                    ->sortable()
+                    ->money('brl')
+                    ->getStateUsing(function ($record) {
+                        return $record->valor_atual - ($record->iof + $record->ir);
+                      }),
+                /*Tables\Columns\TextColumn::make('banco_Emissor.nome')
+                    ->label('Emissor')
                     ->numeric()
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(),*/
                 Tables\Columns\TextColumn::make('conta')
                     ->searchable(),
             ])

@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('descrição');
             $table->date('data_aplicacao');
             $table->int('prazo')->nullable();
+            $table->int('dias_corridos')->nullable();
             $table->date('data_venc')->nullable();
             $table->decimal('valor_aplic', 15,2);
+            $table->decimal('valor_atual', 15,2)->nullable();
             $table->decimal('iof', 15,2)->nullable();
             $table->decimal('ir', 15,2)->nullable();
             $table->string('indice')->nullable();

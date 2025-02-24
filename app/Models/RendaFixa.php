@@ -15,8 +15,10 @@ class RendaFixa extends Model
         'descrição',
         'data_aplicacao',
         'prazo',
+        'dias_corridos',
         'data_venc',
         'valor_aplic',
+        'valor_atual',
         'iof',
         'ir',
         'indice',
@@ -28,4 +30,20 @@ class RendaFixa extends Model
         'conta',
         'status'
         ];
+        public function carteira()
+        {
+            return $this->hasOne(Carteira::class,  'id','id_carteira');
+        }
+        public function ativo()
+        {
+            return $this->hasOne(Ativo::class,  'id','id_ativo');
+        }
+        public function banco_emissor()
+        {
+            return $this->hasOne(Banco::class,  'id','id_banco_emissor');
+        }
+        public function Banco_gestor()
+        {
+            return $this->hasOne(Banco::class,  'id','id_banco_gestor');
+        }
 }
