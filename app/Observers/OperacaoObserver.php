@@ -3,6 +3,7 @@ namespace App\Observers;
 
 use App\Models\Operacao;
 use App\Models\Ativo;
+use Illuminate\Support\Facades\DB;
 
 class OperacaoObserver
 {

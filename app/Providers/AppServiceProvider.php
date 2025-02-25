@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\Operacao;
+use App\Observers\OperacaoObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
