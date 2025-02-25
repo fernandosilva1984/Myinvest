@@ -114,6 +114,7 @@ class AtivoResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('Razao_Social')
                     ->searchable()
+                    ->limit(35)
                     ->label(label:'Razão Social'),
                 Tables\Columns\TextColumn::make('Valor_mercado')
                     ->label(label: 'Valor de mercado')
@@ -145,6 +146,7 @@ class AtivoResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('segmentoAtivo.segmentoAtivo')
                     ->label('Segmento')
+                    ->limit(13)
                     ->searchable(),
 
             ])
