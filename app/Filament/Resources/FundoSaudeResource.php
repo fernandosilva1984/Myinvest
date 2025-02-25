@@ -22,9 +22,8 @@ class FundoSaudeResource extends Resource
     protected static ?string $model = FundoSaude::class;
     protected static ?string $navigationGroup = 'Cadastros';
     protected static ?int $navigationSort = 13;
-
-
     protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
+    protected static ?string $navigationLabel = 'Fundo de Saúde';
 
     public static function form(Form $form): Form
     {
