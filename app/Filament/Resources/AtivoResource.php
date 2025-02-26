@@ -135,7 +135,7 @@ class AtivoResource extends Resource
                       }),
                 Tables\Columns\TextColumn::make('Valor_patrimonio')
                     ->label(label: 'Valor patrimonial')
-                    ->money('brl'),
+                    ->money('brl'),*/
                     Tables\Columns\TextColumn::make('saldo_operacoes')
                     ->label('Qtd. Cotas')
                     ->getStateUsing(function ($record) {
