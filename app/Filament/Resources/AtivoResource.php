@@ -104,6 +104,12 @@ class AtivoResource extends Resource
             ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('tipoAtivo', $direction)),
         ])
         ->groups([
+            Group::make('tipoAtivo.tipoAtivo')
+            ->label('Carteira')
+            ->collapsible()
+            ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('tipoAtivo', $direction)),
+        ])
+        ->groups([
             Group::make('segmentoAtivo.segmentoAtivo')
             ->label('Segmento')
             ->collapsible()
@@ -114,7 +120,7 @@ class AtivoResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('Razao_Social')
                     ->searchable()
-                    ->limit(35)
+                    ->limit(25)
                     ->label(label:'Razão Social'),
                 Tables\Columns\TextColumn::make('Valor_mercado')
                     ->label(label: 'Valor de mercado')
@@ -140,6 +146,13 @@ class AtivoResource extends Resource
                     ->sortable(), // Permite ordenação
                 Tables\Columns\TextColumn::make('cotacaoAtual.valor')
                     ->label(label: 'Cotação')
+                    ->money('brl'),
+                    Tables\Columns\TextColumn::make('precomedio')
+                    ->label(label: 'Preço médio')
+                    ->getStateUsing(function ($record) {
+                        // Chama a função saldoOperacoes do model Ativo
+                        return $record->precomedio();
+                    })
                     ->money('brl'),
                 Tables\Columns\TextColumn::make('tipoAtivo.tipoAtivo')
                     ->label('Tipo')

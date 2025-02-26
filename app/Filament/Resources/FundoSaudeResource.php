@@ -75,6 +75,9 @@ class FundoSaudeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->striped()
+        ->defaultSort('data_','desc')
+        ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
             ->columns([
                 Tables\Columns\TextColumn::make('data_')
                     ->label('Data')

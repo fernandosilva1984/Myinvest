@@ -69,12 +69,30 @@ class Ativo extends Model
             return $this->hasMany(Operacao::class,  'id_ativo');
         }
             // Função para calcular o saldo das operações
-        public function saldoOperacoes(): int
+        public function saldoOperacoes(): float
         {
             $compras = $this->operacoes()->where('tipo', 'C')->sum('qtd');
             $vendas = $this->operacoes()->where('tipo', 'V')->sum('qtd');
 
             return $compras - $vendas;
+        }
+        public function precomedio():float
+
+        {
+            $qtdcompras = $this->operacoes()->where('tipo', 'C')->sum('qtd');
+            $qtdvendas = $this->operacoes()->where('tipo', 'V')->sum('qtd');
+            $resultvendas = $this->operacoes()->where('tipo', 'V')->sum('resultado');
+            $valorcompras = $this->operacoes()->where('tipo', 'C')->sum('valor_total');
+            $valorvendas = $this->operacoes()->where('tipo', 'V')->sum('valor_total');
+            if (($qtdcompras-$qtdvendas) >0){
+                $precomedio = (($valorcompras+$resultvendas)-$valorvendas)/($qtdcompras-$qtdvendas);
+
+            return $precomedio;
+
+            }else{
+                return 0;
+        }
+
         }
 
 }
