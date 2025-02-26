@@ -120,9 +120,9 @@ class AtivoResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('Razao_Social')
                     ->searchable()
-                    ->limit(25)
+                    ->limit(40)
                     ->label(label:'Razão Social'),
-                Tables\Columns\TextColumn::make('Valor_mercado')
+                /*Tables\Columns\TextColumn::make('Valor_mercado')
                     ->label(label: 'Valor de mercado')
                     ->money('brl')
                     ->getStateUsing(function ($record) {
@@ -143,7 +143,7 @@ class AtivoResource extends Resource
                         return $record->saldoOperacoes();
                     })
                     ->numeric() // Formata como número
-                    ->sortable(), // Permite ordenação
+                    ->sortable(), // Permite ordenação*/
                 Tables\Columns\TextColumn::make('cotacaoAtual.valor')
                     ->label(label: 'Cotação')
                     ->money('brl'),

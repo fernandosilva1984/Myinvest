@@ -90,6 +90,9 @@ class MovimentacaoResource extends Resource
                     ->Label('Valor')
                     ->sortable()
                     ->money('brl'),
+                    Tables\Columns\TextColumn::make('obs')
+                    ->Label('Observação')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tipo')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {

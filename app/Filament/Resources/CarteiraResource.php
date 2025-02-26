@@ -59,6 +59,9 @@ class CarteiraResource extends Resource
                 Tables\Columns\TextColumn::make('Aportes.total')
                     ->money('brl')
                     ->label(label: 'Aportes'),
+                    Tables\Columns\TextColumn::make('Dividendos.total')
+                    ->money('brl')
+                    ->label(label: 'Dividendos'),
                 Tables\Columns\TextColumn::make('Saldo_operacoes.total')
                     ->money('brl')
                     ->label(label: 'Resultado'),

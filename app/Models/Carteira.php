@@ -42,6 +42,14 @@ class Carteira extends Model
 
         }
 
+        public function dividendos()
+        {
+
+            $dividendos =$this->hasMany(Movimentacao::class,  'id_carteira', 'id')
+              ->select('id_carteira', DB::raw('sum(valor_total) as `total`'))->where('tipo', 'D')->groupBy('id_carteira');
+            return $dividendos;
+
+        }
         public function saldo()
         {
 
@@ -52,8 +60,20 @@ class Carteira extends Model
             $totalSaques = $this->hasMany(Movimentacao::class, 'id_carteira', 'id')
             ->where('tipo', 'S')
             ->sum('valor_total');
+            // Soma dos dividendos
+    $totalDividendos = $this->hasMany(Movimentacao::class, 'id_carteira', 'id')
+    ->where('tipo', 'D')
+    ->sum('valor_total');
 
-            return $totalAportes - $totalSaques;
+// Soma dos resultados das operações
+$totalOperacoes = $this->hasMany(Operacao::class, 'id_carteira')
+    ->where('tipo', 'V')
+    ->sum('resultado');
+
+// Cálculo do saldo
+$saldo = $totalAportes + $totalDividendos - ($totalSaques - $totalOperacoes);
+
+return $saldo;
         }
 
 
