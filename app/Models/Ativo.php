@@ -64,7 +64,7 @@ class Ativo extends Model
               return $saida;
         }
         // Relacionamento com o model Operacao
-        public function operacoes(): HasMany
+        public function operacoes()
         {
             return $this->hasMany(Operacao::class,  'id_ativo');
         }
@@ -94,5 +94,32 @@ class Ativo extends Model
         }
 
         }
+ // Define o relacionamento com a Carteira
+ public function carteira()
+ {
+     return $this->belongsTo(Carteira::class, 'id_carteira');
+ }
+
+   /* public function operacoes()
+    {
+        return $this->hasMany(Operacao::class, 'id_ativo');
+    }*/
+
+    public function dividendos()
+    {
+        return $this->hasMany(Dividendo::class, 'id_ativo');
+    }
+
+    public function saldo($carteiraId = null)
+    {
+        $query = $this->operacoes();
+
+        if ($carteiraId) {
+            $query->where('id_carteira', $carteiraId);
+        }
+
+        return $query->sum('qtd');
+    }
+
 
 }

@@ -22,10 +22,16 @@ class Dividendo extends Model
         'obs',
         'status'
         ];
-        
+
     public function ativo()
     {
-        return $this->hasOne(Ativo::class,  'id','id_ativo');
+        return $this->belongsTo(Ativo::class, 'id_ativo');
+        //return $this->hasOne(Ativo::class,  'id','id_ativo');
+    }
+
+    public function carteira()
+    {
+        return $this->ativo->carteira();
     }
     protected function valor_dividendo(): Attribute{
         return Attribute::make(
@@ -50,7 +56,7 @@ class Dividendo extends Model
             get: fn ($value) => str_replace(".", ",", $value),
             set: fn ( $value) =>
                 [
-              
+
                     'valor_total' => str_replace(",", ".", str_replace(".", "", $value)),
                 ],
             );
