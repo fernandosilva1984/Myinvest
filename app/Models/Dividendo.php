@@ -29,6 +29,11 @@ class Dividendo extends Model
         //return $this->hasOne(Ativo::class,  'id','id_ativo');
     }
 
+    public function operacoes()
+    {
+        return $this->hasMany(Operacao::class, 'id_ativo', 'id_ativo');
+    }
+
     public function carteira()
     {
         return $this->ativo->carteira();
