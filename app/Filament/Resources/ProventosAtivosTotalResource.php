@@ -30,7 +30,7 @@ class ProventosAtivosTotalResource extends Resource
     {
         return $table
             
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1)->where('id_tipo','<=', 2))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('id_tipo','<=', 2)->orderby('status', 'desc'))
                 ->columns([
                 
                  Tables\Columns\TextColumn::make('Ticket')->label('Ativo'),

@@ -49,7 +49,7 @@ class CarteiraResource extends Resource
         return $table
         ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
             ->columns([
-
+                  
                 Tables\Columns\TextColumn::make('Nome')
                     ->searchable()
                     ->label(label: 'Carteira'),
@@ -59,15 +59,20 @@ class CarteiraResource extends Resource
                 Tables\Columns\TextColumn::make('Aportes.total')
                     ->money('brl')
                     ->label(label: 'Aportes'),
-                    Tables\Columns\TextColumn::make('Dividendos_NEW.total')
+                Tables\Columns\TextColumn::make('dividendos_total')
                     ->money('brl')
                     ->label(label: 'Dividendos'),
+                   
                 Tables\Columns\TextColumn::make('Saldo_operacoes.total')
                     ->money('brl')
                     ->label(label: 'Resultado'),
                 Tables\Columns\TextColumn::make('Saques.total')
                     ->money('brl')
                     ->label(label: 'Saques'),
+                Tables\Columns\TextColumn::make('getRendaFixa.total')
+                    ->money('brl')
+                    ->label(label: 'Renda Fixa'),   
+                    
                 Tables\Columns\TextColumn::make('saldo')
                     ->money('brl')
                     ->label(label: 'Saldo')
