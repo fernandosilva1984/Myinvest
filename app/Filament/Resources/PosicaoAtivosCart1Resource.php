@@ -21,15 +21,17 @@ class PosicaoAtivosCart1Resource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Carteira 1';
+
 
     public static function table(Table $table): Table
     {
         return $table
-
+        ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1)->where('id_tipo','<=', 2))
         ->columns([
          //   Tables\Columns\TextColumn::make('id_ativo')->label('ID Ativo'),
          //   Tables\Columns\TextColumn::make('id_carteira')->label('ID Carteira'),
-         Tables\Columns\TextColumn::make('Ticket')->label('AtivoAAA')
+         Tables\Columns\TextColumn::make('Ticket')->label('Ativo')
          /*->getStateUsing(function ($record) {
             // Busca o nome do ativo relacionado
             $ativo = Ativo::find($record->id_ativo);
@@ -46,29 +48,30 @@ class PosicaoAtivosCart1Resource extends Resource
     }
 
     protected static function getMonthlyProventoColumns(): array
-{
-    $columns = [];
-   // $columns[] =
-
-    // Supondo que você queira os últimos 12 meses
-    for ($i = 0; $i < 12; $i++) {
-        $month = now()->subMonths($i)->format('Y-m');
-        $columns[] = Tables\Columns\TextColumn::make("provento_$month")
-            ->label(ucfirst(now()->subMonths($i)->format('m/Y')))
-            ->money('brl')
-            ->getStateUsing(function ($record) use ($month) {
-                return PosicaoAtivosCart1::table('posicao_ativos_cart_1')
-                    ->where('id_ativo', $record->id_ativo)
-                    ->where('saldo_operacoes', '<>', 0) // Filtra saldo_operacoes diferente de zero
-                    ->where(PosicaoAtivosCart1::raw("DATE_FORMAT(data_com, '%Y-%m')"), $month)
-                    ->groupBy('id_ativo') // Agrupa por id_ativo para evitar duplicações
-                    ->selectRaw('SUM(provento) as total_provento') // Soma os proventos
-                    ->value('total_provento') ?? "";// Retorna o valor da soma ou 0 se não houver resultados
-            });
+    {
+        $columns = [];
+    
+        // Supondo que você queira os últimos 12 meses
+        for ($i = 0; $i < 12; $i++) {
+            $month = now()->subMonths($i)->format('Y-m');
+            $columns[] = Tables\Columns\TextColumn::make("provento_$month")
+                ->label(ucfirst(now()->subMonths($i)->format('m/Y')))
+                ->money('brl')
+                ->getStateUsing(function ($record) use ($month) {
+                    return PosicaoAtivosCart1::query()
+                        ->where('id_ativo', $record->id)
+                        ->where('saldo_operacoes', '<>', 0) // Filtra saldo_operacoes diferente de zero
+                        ->whereRaw("DATE_FORMAT(data_com, '%Y-%m') = ?", [$month])
+                        ->groupBy('id_ativo') // Agrupa por id_ativo para evitar duplicações
+                        ->selectRaw('SUM(provento) as total_provento') // Soma os proventos
+                        ->value('total_provento') ?? ""; // Retorna o valor da soma ou 0 se não houver resultados
+                });
+        }
+    
+        return $columns;
     }
 
-    return $columns;
-}
+ 
 
 
     public static function getRelations(): array

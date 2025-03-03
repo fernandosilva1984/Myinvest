@@ -50,6 +50,40 @@ class Carteira extends Model
             return $dividendos;
 
         }
+
+        public function dividendos_NEW()
+{
+    switch ($this->id) {
+        case 1:
+            $dividendos = $this->hasMany(ProventoAtivosCart01::class, 'id_carteira', 'id')
+                ->select('id_carteira', DB::raw('sum(provento) as `total`'))
+                ->groupBy('id_carteira');
+            break;
+        case 2:
+            $dividendos = $this->hasMany(ProventoAtivosCart02::class, 'id_carteira', 'id')
+                ->select('id_carteira', DB::raw('sum(provento) as `total`'))
+                ->groupBy('id_carteira');
+            break;
+        case 3:
+            $dividendos = $this->hasMany(ProventoAtivosCart03::class, 'id_carteira', 'id')
+                ->select('id_carteira', DB::raw('sum(provento) as `total`'))
+                ->groupBy('id_carteira');
+            break;
+        default:
+            $dividendos = $this->hasMany(ProventoAtivosCart05::class, 'id_carteira', 'id')
+                ->select('id_carteira', DB::raw('sum(provento) as `total`'))
+                ->groupBy('id_carteira');
+            break;
+    }
+
+    return $dividendos;
+/*}/*
+            $dividendos =$this->hasMany(Movimentacao::class,  'id_carteira', 'id')
+              ->select('id_carteira', DB::raw('sum(valor_total) as `total`'))->where('tipo', 'D')->groupBy('id_carteira');
+            return $dividendos;
+*/
+        }
+
         public function saldo()
         {
 
@@ -61,9 +95,9 @@ class Carteira extends Model
             ->where('tipo', 'S')
             ->sum('valor_total');
             // Soma dos dividendos
-    $totalDividendos = $this->hasMany(Movimentacao::class, 'id_carteira', 'id')
-    ->where('tipo', 'D')
-    ->sum('valor_total');
+            $totalDividendos = $this->hasMany(Movimentacao::class, 'id_carteira', 'id')
+            ->where('tipo', 'D')
+            ->sum('valor_total');
 
 // Soma dos resultados das operações
 $totalOperacoes = $this->hasMany(Operacao::class, 'id_carteira')

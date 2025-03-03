@@ -5,12 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PosicaoAtivosCart1 extends Model
+class ProventoAtivosTotal extends Model
 {
-
-        protected $table = 'posicao_ativos_cart_1';
+        protected $table = 'proventos_ativos';
         protected $primaryKey = 'id_ativo'; // Defina a chave primária, se necessário
         public $timestamps = false; // Desabilita timestamps, já que é uma view
-
-
 }
+

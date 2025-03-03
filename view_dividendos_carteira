@@ -1,4 +1,4 @@
-SELECT
+CREATE VIEW proventos_ativos_cart_5 AS SELECT
   `d`.`id_ativo`    AS `id_ativo`,
   `o`.`id_carteira` AS `id_carteira`,
   `a`.`Ticket`      AS `ticket_ativo`,
@@ -15,3 +15,20 @@ FROM ((`dividendos` `d`
           AND (`o`.`data` <= `d`.`data_com`))))
 GROUP BY `d`.`id_ativo`,`a`.`Ticket`,`d`.`data_com`
 ORDER BY `d`.`data_com` DESC
+
+CREATE VIEW proventos_ativos AS 
+select
+  `d`.`id_ativo` AS `id_ativo`,
+  `a`.`Ticket`   AS `ticket_ativo`,
+  `d`.`data_com` AS `data_com`,
+  `d`.`data_pag`    AS `data_pag`,
+  sum((case when (`o`.`tipo` = 'C') then `o`.`qtd` when (`o`.`tipo` = 'V') then -(`o`.`qtd`) else 0 end)) AS `saldo_operacoes`,
+  (`d`.`valor_total` * SUM((CASE WHEN (`o`.`tipo` = 'C') THEN `o`.`qtd` WHEN (`o`.`tipo` = 'V') THEN -(`o`.`qtd`) ELSE 0 END))) AS `provento`
+from ((`dividendos` `d`
+    join `ativos` `a`
+      on ((`d`.`id_ativo` = `a`.`id`)))
+   left join `operacaos` `o`
+     on (((`d`.`id_ativo` = `o`.`id_ativo`)
+          and (`o`.`data` <= `d`.`data_com`))))
+group by `d`.`id_ativo`,`a`.`Ticket`,`d`.`data_com`
+order by `d`.`id_ativo`,`d`.`data_com`

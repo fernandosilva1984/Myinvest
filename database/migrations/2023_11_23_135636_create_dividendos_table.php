@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_ativo');
             $table->date('data_ref');
-            $table->decimal('valor_dividendo', 15,2)->nullable();
-            $table->decimal('valor_jcp', 15,2)->nullable();
-            $table->decimal('valor_total',15,2)->storedAs('valor_dividendo + valor_jcp')->nullable();
+            $table->decimal('valor_dividendo', 15,7)->nullable();
+            $table->decimal('valor_jcp', 15,7)->nullable();
+            $table->decimal('valor_total',15,7)->storedAs('valor_dividendo + valor_jcp')->nullable();
             $table->date('data_com');
             $table->date('data_pag');
             $table->string('obs')->nullable();
