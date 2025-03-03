@@ -69,9 +69,11 @@ class CarteiraResource extends Resource
                 Tables\Columns\TextColumn::make('Saques.total')
                     ->money('brl')
                     ->label(label: 'Saques'),
-                Tables\Columns\TextColumn::make('getRendaFixa.total')
+                Tables\Columns\TextColumn::make('RFAtual')
                     ->money('brl')
-                    ->label(label: 'Renda Fixa'),   
+                    ->label(label: 'Renda Fixa')
+                    ->getStateUsing(function ($record) {
+                        return $record->getRendaFixa();}),   
                     
                 Tables\Columns\TextColumn::make('saldo')
                     ->money('brl')

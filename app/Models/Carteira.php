@@ -98,16 +98,25 @@ class Carteira extends Model
 
         public function getRendaFixa()
 {
-    $resultado = $this->hasMany(RendaFixa::class, 'id_carteira', 'id')
-        ->where('status', 1)
-        ->selectRaw('SUM(valor_atual) as valor_atual, SUM(iof) as iof, SUM(ir) as ir')
-        ->first();
+    // Obtém a soma do valor_atual
+    $valor_atual = $this->hasMany(RendaFixa::class, 'id_carteira', 'id')
+        ->where('status', 1) // Filtra por status, se necessário
+        ->sum('valor_atual');
 
-    if ($resultado) {
-        return $resultado->valor_atual - ($resultado->iof + $resultado->ir);
-    }
+    // Obtém a soma do IOF
+    $iof = $this->hasMany(RendaFixa::class, 'id_carteira', 'id')
+        ->where('status', 1) // Filtra por status, se necessário
+        ->sum('iof');
 
-    return 0;
+    // Obtém a soma do IR
+    $ir = $this->hasMany(RendaFixa::class, 'id_carteira', 'id')
+        ->where('status', 1) // Filtra por status, se necessário
+        ->sum('ir');
+
+    // Calcula o valor líquido da renda fixa
+    $rendaFixa = $valor_atual - ($iof + $ir);
+
+    return $rendaFixa;
 }
         
     }

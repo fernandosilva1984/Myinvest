@@ -28,5 +28,9 @@ php artisan db:seed --class=NomeDaSeeder
 
 ==================== COMANDOS FILAMENT ===============================
 
-php artisan make:filament-resource OperacaoResource --generate --view
+php artisan make:filament-resource OperacaoResource --list
 
+
+
+/// atualizar renda fixa
+php artisan rendafixa:atualizar

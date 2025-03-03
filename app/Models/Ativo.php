@@ -84,7 +84,7 @@ class Ativo extends Model
             $resultvendas = $this->operacoes()->where('tipo', 'V')->sum('resultado');
             $valorcompras = $this->operacoes()->where('tipo', 'C')->sum('valor_total');
             $valorvendas = $this->operacoes()->where('tipo', 'V')->sum('valor_total');
-            if (($qtdcompras-$qtdvendas) >0){
+            if (($qtdcompras-$qtdvendas) > 0){
                 $precomedio = (($valorcompras+$resultvendas)-$valorvendas)/($qtdcompras-$qtdvendas);
 
             return $precomedio;
