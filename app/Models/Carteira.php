@@ -53,7 +53,7 @@ class Carteira extends Model
 
         public function dividendos_NEW()
         {
-            switch ($this->id) {
+            switch ($this->id_carteira) {
                 case 1:
                     $dividendos = $this->hasMany(ProventoAtivosCart01::class, 'id_carteira', 'id')
                         ->select('id_carteira', DB::raw('sum(provento) as `total`'))
