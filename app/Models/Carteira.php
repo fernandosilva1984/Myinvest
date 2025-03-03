@@ -52,31 +52,31 @@ class Carteira extends Model
         }
 
         public function dividendos_NEW()
-{
-    switch ($this->id) {
-        case 1:
-            $dividendos = $this->hasMany(ProventoAtivosCart01::class, 'id_carteira', 'id')
-                ->select('id_carteira', DB::raw('sum(provento) as `total`'))
-                ->groupBy('id_carteira');
-            break;
-        case 2:
-            $dividendos = $this->hasMany(ProventoAtivosCart02::class, 'id_carteira', 'id')
-                ->select('id_carteira', DB::raw('sum(provento) as `total`'))
-                ->groupBy('id_carteira');
-            break;
-        case 3:
-            $dividendos = $this->hasMany(ProventoAtivosCart03::class, 'id_carteira', 'id')
-                ->select('id_carteira', DB::raw('sum(provento) as `total`'))
-                ->groupBy('id_carteira');
-            break;
-        default:
-            $dividendos = $this->hasMany(ProventoAtivosCart05::class, 'id_carteira', 'id')
-                ->select('id_carteira', DB::raw('sum(provento) as `total`'))
-                ->groupBy('id_carteira');
-            break;
-    }
+        {
+            switch ($this->id) {
+                case 1:
+                    $dividendos = $this->hasMany(ProventoAtivosCart01::class, 'id_carteira', 'id')
+                        ->select('id_carteira', DB::raw('sum(provento) as `total`'))
+                        ->groupBy('id_carteira');
+                    break;
+                case 2:
+                    $dividendos = $this->hasMany(ProventoAtivosCart02::class, 'id_carteira', 'id')
+                        ->select('id_carteira', DB::raw('sum(provento) as `total`'))
+                        ->groupBy('id_carteira');
+                    break;
+                case 3:
+                    $dividendos = $this->hasMany(ProventoAtivosCart03::class, 'id_carteira', 'id')
+                        ->select('id_carteira', DB::raw('sum(provento) as `total`'))
+                        ->groupBy('id_carteira');
+                    break;
+                default:
+                    $dividendos = $this->hasMany(ProventoAtivosCart05::class, 'id_carteira', 'id')
+                        ->select('id_carteira', DB::raw('sum(provento) as `total`'))
+                        ->groupBy('id_carteira');
+                    break;
+            }
 
-    return $dividendos;
+            return $dividendos;
 /*}/*
             $dividendos =$this->hasMany(Movimentacao::class,  'id_carteira', 'id')
               ->select('id_carteira', DB::raw('sum(valor_total) as `total`'))->where('tipo', 'D')->groupBy('id_carteira');
