@@ -29,6 +29,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
+            ->resources([
+                config('filament-logger.activity_resource')
+            ])
             ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::hex('#014bde'),

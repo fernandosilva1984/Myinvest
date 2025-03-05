@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 //use Illuminate\Database\Eloquent\Casts\Attribute;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Dividendo extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes,  LogsActivity;
     protected $fillable = [
         'id',
         'id_ativo',
@@ -22,6 +24,14 @@ class Dividendo extends Model
         'obs',
         'status'
         ];
+
+        public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+         ->logOnly(['*'])
+         ->logOnlyDirty();
+        // Chain fluent methods for configuration options
+    }
 
     public function ativo()
     {

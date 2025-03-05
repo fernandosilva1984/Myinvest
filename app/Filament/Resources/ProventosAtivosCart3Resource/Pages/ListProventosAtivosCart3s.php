@@ -10,10 +10,5 @@ class ListProventosAtivosCart3s extends ListRecords
 {
     protected static string $resource = ProventosAtivosCart3Resource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    protected static ?string $title = 'Proventos recebidos por ativo / Líbina';
 }

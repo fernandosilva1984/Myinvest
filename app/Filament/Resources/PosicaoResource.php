@@ -2,67 +2,77 @@
 
 namespace App\Filament\Resources;
 
+
+use Filament\Tables\Columns\Layout\Grid;
 use App\Filament\Resources\PosicaoResource\Pages;
 use App\Filament\Resources\PosicaoResource\RelationManagers;
 use App\Models\Posicao;
+use App\Models\Carteira;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PosicaoResource extends Resource
 {
-    protected static ?string $model = Posicao::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $model = Carteira::class;
+    protected static ?string $navigationIcon = 'heroicon-o-chart-bar-square';
+    protected static ?string $navigationLabel = 'Posição carteiras';
 
     
-
     public static function table(Table $table): Table
     {
         return $table
+        //->modifyQueryUsing(fn (Builder $query) => $query->groupby('id_carteira'))
             ->columns([
-                Tables\Columns\TextColumn::make('carteira.Nome')
+                TextColumn::make('Nome')
                     ->searchable()
                     ->label(label: 'Carteira'),
-                Tables\Columns\TextColumn::make('RFAtual')
+                TextColumn::make('RFAtual')
                     ->money('brl')
-                    ->label(label: 'Renda Fixa')
+                    ->label('Renda Fixa')
+                    ->getStateUsing(fn ($record) => $record->getRendaFixa()),
+                TextColumn::make('fiis')
+                    ->money('brl')
+                    ->label('FIIs')
+                    ->getStateUsing(fn ($record) => $record->getSaldoFII()),
+                TextColumn::make('acoes')
+                    ->money('brl')
+                    ->label('Ações')
+                    ->getStateUsing(fn ($record) => $record->getSaldoACOES()),
+                TextColumn::make('cripto')
+                    ->money('brl')
+                    ->label('Criptos')
+                    ->getStateUsing(fn ($record) => $record->getSaldoCripto()),
+                Tables\Columns\TextColumn::make('totalinvest')
+                    ->money('brl')
+                    ->label(label: 'Total Investido')
                     ->getStateUsing(function ($record) {
-                        return $record->getRendaFixa();}),  
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ])
-            ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
-            ]);
-    }
-    
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                        return $record->getAplicado();}),
+                
+                Tables\Columns\TextColumn::make('saldo')
+                    ->money('brl')
+                    ->label(label: 'Total Aportes')
+                    ->getStateUsing(function ($record) {
+                        return $record->saldo();}),
+
+                Tables\Columns\TextColumn::make('resultado')
+                    ->money('brl')
+                    ->label(label: 'Resultado')
+                    ->getStateUsing(function ($record) {
+                        return $record->getResultado();}),
+                ]);
     }
     
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListPosicaos::route('/'),
-            'create' => Pages\CreatePosicao::route('/create'),
-            'edit' => Pages\EditPosicao::route('/{record}/edit'),
+            
         ];
     }    
 }

@@ -10,10 +10,5 @@ class ListProventosAtivosCart2s extends ListRecords
 {
     protected static string $resource = ProventosAtivosCart2Resource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    protected static ?string $title = 'Proventos recebidos por ativo / Fernando';
 }

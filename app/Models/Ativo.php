@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Ativo extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes,  LogsActivity;
     protected $fillable = [
         'id',
         'Ticket',
@@ -23,6 +25,13 @@ class Ativo extends Model
         'status'
         ];
 
+        public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+         ->logOnly(['*'])
+         ->logOnlyDirty();
+        // Chain fluent methods for configuration options
+    }
         // Escopo local para filtrar registros
         public function scopeAtivosAtivos($query)
         {

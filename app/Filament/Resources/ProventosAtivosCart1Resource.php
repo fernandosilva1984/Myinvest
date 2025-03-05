@@ -101,19 +101,12 @@ class ProventosAtivosCart1Resource extends Resource
     return $columns;
 }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-    
+       
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListProventosAtivosCart1s::route('/'),
-            'create' => Pages\CreateProventosAtivosCart1::route('/create'),
-            'edit' => Pages\EditProventosAtivosCart1::route('/{record}/edit'),
+            
         ];
     }    
 }

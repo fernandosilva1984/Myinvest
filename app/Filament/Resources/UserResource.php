@@ -44,6 +44,11 @@ class UserResource extends Resource
                 ->password()
                 ->required()
                 ->maxLength(255),
+                Forms\Components\Select::make('roles')
+                ->label('Perfil')
+              //  ->multiple()
+                ->preload()
+                ->relationship('roles', 'name'),
         ]);
     }
 
@@ -75,9 +80,11 @@ class UserResource extends Resource
                 ->label('')
                 ->tooltip('Editar'),
                 Tables\Actions\DeleteAction::make()
+                ->visible(fn (User $user): bool => auth()->user()->can('delete', $user))
                 ->modalHeading('Tem certeza?')
                 ->modalDescription('Essa ação não pode ser desfeita.')
                 ->modalButton('Excluir')
+                //->can('delete', User::class)
                 ->modalWidth('md') // ✅ Correção: Usando o enum corretamente
                 ->label('')
                 ->tooltip('Excluir'),

@@ -101,12 +101,7 @@ class ProventosAtivosCart3Resource extends Resource
     return $columns;
 }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
+    
     
     public static function getPages(): array
     {

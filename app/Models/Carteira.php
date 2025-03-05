@@ -7,16 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Attribute;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Carteira extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes,  LogsActivity;
     protected $fillable = [
         'id',
         'Nome',
         'Proprietario',
         'status'
         ];
+
+        public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+         ->logOnly(['*'])
+         ->logOnlyDirty();
+        // Chain fluent methods for configuration options
+    }
 
         public function Saldo_operacoes()
         {
@@ -95,28 +105,67 @@ class Carteira extends Model
             $saldo = $totalAportes + $totalDividendos - ($totalSaques - $totalOperacoes);
             return $saldo;
         }
+        
 
         public function getRendaFixa()
-{
-    // Obtém a soma do valor_atual
-    $valor_atual = $this->hasMany(RendaFixa::class, 'id_carteira', 'id')
-        ->where('status', 1) // Filtra por status, se necessário
-        ->sum('valor_atual');
+        {
+            // Obtém a soma do valor_atual
+            $valor_atual = $this->hasMany(RendaFixa::class, 'id_carteira', 'id')
+                ->where('status', 1) // Filtra por status, se necessário
+                ->sum('valor_atual');
 
-    // Obtém a soma do IOF
-    $iof = $this->hasMany(RendaFixa::class, 'id_carteira', 'id')
-        ->where('status', 1) // Filtra por status, se necessário
-        ->sum('iof');
+            // Obtém a soma do IOF
+            $iof = $this->hasMany(RendaFixa::class, 'id_carteira', 'id')
+                ->where('status', 1) // Filtra por status, se necessário
+                ->sum('iof');
 
-    // Obtém a soma do IR
-    $ir = $this->hasMany(RendaFixa::class, 'id_carteira', 'id')
-        ->where('status', 1) // Filtra por status, se necessário
-        ->sum('ir');
+            // Obtém a soma do IR
+            $ir = $this->hasMany(RendaFixa::class, 'id_carteira', 'id')
+                ->where('status', 1) // Filtra por status, se necessário
+                ->sum('ir');
 
-    // Calcula o valor líquido da renda fixa
-    $rendaFixa = $valor_atual - ($iof + $ir);
+            // Calcula o valor líquido da renda fixa
+            $rendaFixa = $valor_atual - ($iof + $ir);
 
-    return $rendaFixa;
-}
+            return $rendaFixa;
+        }
+
+        //// funções para resource posicao
+
+        public function getSaldoACOES()
+        {
+            $acoes = $this->hasMany(Posicao::class, 'id_carteira', 'id')
+            ->where('id_tipo', 1) // Filtra por tipo 1 - açoes
+            ->sum('patrimonio') ?? 0;
+
+            return $acoes;
+        }
         
-    }
+        public function getSaldoFII()
+        {
+            $fiis = $this->hasMany(Posicao::class, 'id_carteira', 'id')
+            ->where('id_tipo', 2) // Filtra por tipo 2 - FIIS
+            ->sum('patrimonio') ?? 0;
+            return $fiis;
+        }
+        public function getSaldoCripto()
+        {
+            $cripto = $this->hasMany(Posicao::class, 'id_carteira', 'id')
+            ->where('id_tipo', 4) // Filtra por tipo 4 - cripto
+            ->sum('patrimonio') ?? 0;
+            return $cripto;
+        }
+        public function getResultado()
+        {
+
+            $resultado =  ($this->getRendaFixa() + $this->getSaldoACOES() + $this->getSaldoFII() + $this->getSaldoCripto())- $this->saldo();
+            return $resultado ;
+        }
+        public function getAplicado()
+        {
+
+            $resultado =  ($this->getRendaFixa() + $this->getSaldoACOES() + $this->getSaldoFII() + $this->getSaldoCripto());
+            return $resultado ;
+        }
+
+}

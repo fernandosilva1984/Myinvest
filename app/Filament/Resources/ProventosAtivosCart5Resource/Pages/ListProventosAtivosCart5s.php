@@ -10,10 +10,5 @@ class ListProventosAtivosCart5s extends ListRecords
 {
     protected static string $resource = ProventosAtivosCart5Resource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    protected static ?string $title = 'Proventos recebidos por ativo / Dona Lita';
 }

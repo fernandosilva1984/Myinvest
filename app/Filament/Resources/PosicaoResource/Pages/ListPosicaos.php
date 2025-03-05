@@ -9,11 +9,6 @@ use Filament\Resources\Pages\ListRecords;
 class ListPosicaos extends ListRecords
 {
     protected static string $resource = PosicaoResource::class;
+    protected static ?string $title = 'Posição de investimentos / Carteira';
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
 }

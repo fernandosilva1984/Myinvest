@@ -29,6 +29,12 @@ class RoleResource extends Resource
                     ->required(),
                    //->maxLength(255),
 
+                Forms\Components\Select::make('permissions')
+                ->label('Permissões')
+                ->multiple()
+                ->preload()
+                ->relationship('permissions', 'name')
+
             ]);
     }
 
