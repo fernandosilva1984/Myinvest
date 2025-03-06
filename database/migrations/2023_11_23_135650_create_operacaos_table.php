@@ -16,9 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_carteira');
             $table->unsignedBigInteger('id_ativo');
             $table->date('data');
-            $table->integer('qtd')->nullable();
-            $table->decimal('valor_unitario', 15,2)->nullable();
-            $table->decimal('valor_total',15,2)->storedAs('qtd * valor_unitario')->nullable();
+            $table->decimal('qtd', 20,10)->nullable();
+            $table->decimal('valor_unitario', 20,10)->nullable();
+            $table->decimal('valor_total',21,10)->storedAs('qtd * valor_unitario')->nullable();
             $table->decimal('preco_medio', 15,10)->nullable();
             $table->decimal('resultado', 15,10)->nullable();
             $table->decimal('tarifa', 15,2)->nullable();
