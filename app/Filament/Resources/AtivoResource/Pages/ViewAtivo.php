@@ -14,8 +14,8 @@ class ViewAtivo extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make()
-            ->modelHeading('aaaa'),
+            Actions\EditAction::make(),
+            
         ];
     }
 }

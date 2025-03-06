@@ -18,8 +18,8 @@ class RoleResource extends Resource
     protected static ?string $model = Role::class;
     protected static ?string $navigationGroup = 'Configurações';
     protected static ?int $navigationSort = 2;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
+    protected static ?string $navigationLabel = 'Perfils';
 
     public static function form(Form $form): Form
     {
@@ -43,10 +43,12 @@ class RoleResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nome')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Criado em')
+                    ->dateTime(format: 'd/m/Y H:i:s')
                     ->sortable(),
                     //->toggleable(isToggledHiddenByDefault: true),
 
@@ -55,8 +57,16 @@ class RoleResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                ->label('')
+                ->tooltip('Editar'),
+                Tables\Actions\DeleteAction::make()
+                ->modalHeading('Tem certeza?')
+                ->modalDescription('Essa ação não pode ser desfeita.')
+                ->modalButton('Excluir')
+                ->modalWidth('md') // ✅ Correção: Usando o enum corretamente
+                ->label('')
+                ->tooltip('Excluir'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

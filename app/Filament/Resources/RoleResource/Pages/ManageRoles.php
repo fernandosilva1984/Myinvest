@@ -9,11 +9,13 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageRoles extends ManageRecords
 {
     protected static string $resource = RoleResource::class;
-
+    protected static ?string $title = 'Perfils';
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Novo Perfil'),
+
         ];
     }
 }

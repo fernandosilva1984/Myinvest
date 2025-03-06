@@ -10,4 +10,9 @@ class CreateAtivo extends CreateRecord
 {
     protected static string $resource = AtivoResource::class;
     protected static ?string $title = 'Novo Ativo';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

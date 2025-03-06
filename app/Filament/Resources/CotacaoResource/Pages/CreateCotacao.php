@@ -10,4 +10,9 @@ class CreateCotacao extends CreateRecord
 {
     protected static string $resource = CotacaoResource::class;
     protected static ?string $title = 'Nova Cotação';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -29,9 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
-            ->resources([
-                config('filament-logger.activity_resource')
-            ])
+            
             ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::hex('#014bde'),
@@ -61,14 +59,20 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                ->label('Cadastro')
-                //->icon('heroicon-o-plus-circle')
+                ->label('Cadastros')
+               // ->icon('heroicon-o-plus-circle')
                 ->collapsed(),
                 //->collapsible(),
                 //->sidebarCollapsibleOnDesktop(),
                 NavigationGroup::make()
-                ->label('Relatórios')
+                ->label('Dividendos por Carteira'),
+               // ->icon('heroicon-o-shopping-cart'),
+                NavigationGroup::make()
+                ->label('Configurações')
                 //->icon('heroicon-o-shopping-cart'),
+            ])
+            ->resources([
+                config('filament-logger.activity_resource')
             ])
             ->authMiddleware([
                 Authenticate::class,

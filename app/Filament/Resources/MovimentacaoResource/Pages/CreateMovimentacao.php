@@ -12,6 +12,10 @@ class CreateMovimentacao extends CreateRecord
     protected static string $resource = MovimentacaoResource::class;
     protected static ?string $title = 'Nova Movimentação';
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     protected function beforeFormFilled(): void
     {
         if ($this->record->tipo == 'S'){

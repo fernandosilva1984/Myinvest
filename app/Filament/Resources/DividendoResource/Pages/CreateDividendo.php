@@ -10,4 +10,8 @@ class CreateDividendo extends CreateRecord
 {
     protected static string $resource = DividendoResource::class;
     protected static ?string $title = 'Novo Provento';
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

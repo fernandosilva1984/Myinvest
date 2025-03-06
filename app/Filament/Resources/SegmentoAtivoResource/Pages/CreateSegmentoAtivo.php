@@ -10,4 +10,8 @@ class CreateSegmentoAtivo extends CreateRecord
 {
     protected static string $resource = SegmentoAtivoResource::class;
     protected static ?string $title = 'Novo Segmento';
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

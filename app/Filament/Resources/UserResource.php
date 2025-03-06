@@ -42,13 +42,15 @@ class UserResource extends Resource
             Forms\Components\TextInput::make('password')
                 ->label(label: 'Senha')
                 ->password()
-                ->required()
-                ->maxLength(255),
-                Forms\Components\Select::make('roles')
+                ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                ->dehydrated(fn ($state) => filled($state))
+                ->required(fn (string $context): bool => $context === 'create'),
+            Forms\Components\Select::make('roles')
                 ->label('Perfil')
               //  ->multiple()
                 ->preload()
-                ->relationship('roles', 'name'),
+                ->relationship('roles', 'name', fn(builder $query) => auth()->user()->hasRole('TI')? null : 
+                $query->where('name', '!=', 'TI')),
         ]);
     }
 
@@ -58,11 +60,12 @@ class UserResource extends Resource
         ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 1))
         ->columns([
             Tables\Columns\TextColumn::make('name')
-            ->label(label: 'Nome Completo'),
+                ->label(label: 'Nome Completo'),
             Tables\Columns\TextColumn::make('email')
-            ->label(label: 'E-mail'),
-           // Tables\Columns\TextColumn::make('email_verified_at')
-           //     ->dateTime(),
+                ->label(label: 'E-mail'),
+            Tables\Columns\TextColumn::make('roles.name')
+                ->label('Perfil')
+                ->searchable(),
             Tables\Columns\TextColumn::make('created_at')
                 ->dateTime(format: 'd/m/Y H:i:s')
                 ->label(label: 'Data de Cadastro'),
@@ -111,5 +114,11 @@ class UserResource extends Resource
             'view' => Pages\ViewUser::route('/{record}'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+
+    {
+        return auth()->user()->hasRole('TI') ? parent::getEloquentQuery() : parent::getEloquentQuery()->whereHas('roles', fn (Builder $query) => $query->where('name', '!=', 'TI'));
     }
 }

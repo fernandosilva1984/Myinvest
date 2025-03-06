@@ -10,4 +10,9 @@ class CreateRendaFixa extends CreateRecord
 {
     protected static string $resource = RendaFixaResource::class;
     protected static ?string $title = 'Nova Aplicação';
+   
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -60,4 +60,56 @@ class Operacao extends Model
                 ],
             );
     }
+
+    protected static function booted()
+    {
+        static::creating(function ($operacao) {
+            if ($operacao->tipo === 'V') {
+                $operacao->calcularPrecoMedioEResultado();
+            }
+        });
+    }
+
+    public function calcularPrecoMedioEResultado()
+    {
+        // Obter todas as operações de compra e venda para o ativo na carteira
+        $compras = Operacao::where('id_carteira', $this->id_carteira)
+            ->where('id_ativo', $this->id_ativo)
+            ->where('tipo', 'C')
+            ->get();
+
+        $vendas = Operacao::where('id_carteira', $this->id_carteira)
+            ->where('id_ativo', $this->id_ativo)
+            ->where('tipo', 'V')
+            ->get();
+
+        // Calcular o valor total das compras
+        $valorTotalCompras = $compras->sum('valor_total');
+
+        // Calcular a quantidade total de compras
+        $qtdCompras = $compras->sum('qtd');
+
+        // Calcular o valor total das vendas
+        $valorTotalVendas = $vendas->sum('valor_total');
+
+        // Calcular a quantidade total de vendas
+        $qtdVendas = $vendas->sum('qtd');
+
+        // Calcular o resultado acumulado das vendas anteriores
+        $resultadoVendasAnteriores = $vendas->sum('resultado');
+
+        // Calcular o preço médio
+        if (($qtdCompras - $qtdVendas) != 0) {
+            $precoMedio = (($valorTotalCompras + $resultadoVendasAnteriores) - $valorTotalVendas) / ($qtdCompras - $qtdVendas);
+        } else {
+            $precoMedio = 0; // Evitar divisão por zero
+        }
+
+        // Calcular o resultado da venda atual
+        $resultado = ($this->valor_unitario - $precoMedio) * $this->qtd;
+
+        // Atualizar os campos na operação de venda
+        $this->preco_medio = $precoMedio;
+        $this->resultado = $resultado;
+    }
 }

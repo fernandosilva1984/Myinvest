@@ -54,9 +54,43 @@ class OperacaoResource extends Resource
                         ->label('Ativo')
                         ->required()
                         ->searchable()
-                        ->options((
+                        ->options(function (callable $get) {
+                            // Filtra os ativos com base na carteira selecionada
+                            $carteiraId = $get('id_carteira');
+                            if (!$carteiraId) {
+                                return [];
+                            }
+                            return Ativo::whereHas('operacoes', function ($query) use ($carteiraId) {
+                                $query->where('id_carteira', $carteiraId)->orderby('Ticket', 'DESC');
+                            })->pluck('Ticket', 'id');
+                        })
+                        ->reactive() // Torna o campo reativo
+                        ->afterStateUpdated(function ($state, callable $set, $get) {
+                            // Busca a quantidade e o preço médio quando o ativo é selecionado
+                            $qtdCompra = Operacao::where('id_carteira', $get('id_carteira'))
+                                ->where('id_ativo', $state)->where('tipo', 'C')->sum('qtd');
+                            $qtdvenda = Operacao::where('id_carteira', $get('id_carteira'))
+                                ->where('id_ativo', $state)->where('tipo', 'V')->sum('qtd');
+                            $V_totalCompra = Operacao::where('id_carteira', $get('id_carteira'))
+                                ->where('id_ativo', $state)->where('tipo', 'C')->sum('valor_total');
+                            $V_totalVenda = Operacao::where('id_carteira', $get('id_carteira'))
+                                ->where('id_ativo', $state)->where('tipo', 'V')->sum('valor_total');
+                            $ResultadoVenda = Operacao::where('id_carteira', $get('id_carteira'))
+                                ->where('id_ativo', $state)->where('tipo', 'V')->sum('resultado');
+
+                            $quantidadeDisponivel = $qtdCompra - $qtdvenda;
+
+                            $precoMedio = (($V_totalCompra + $ResultadoVenda) - $V_totalVenda) / $quantidadeDisponivel;
+    
+                            $set('quantidade_disponivel', $quantidadeDisponivel);
+                            $set('preco_medio_atual', $precoMedio);
+                        })
+                        ->required(),
+                        /*->options((
                         Ativo::all()->sortBy('Ticket')->where('status',1)->pluck('Ticket','id')->toArray()
-                        )),
+                        )),*/
+
+                    
                     Forms\Components\DatePicker::make('data')
                         ->label('Data')
                         ->required(),
@@ -77,25 +111,42 @@ class OperacaoResource extends Resource
                             return str_replace(',', '.', $state);
                         })
                         ->prefix('R$'),
-                        Forms\Components\TextInput::make('valor_total')
+                    Forms\Components\TextInput::make('valor_total')
                         ->label('Valor Total')
                         ->formatStateUsing(fn ($state) => number_format($state, 2, ',', '.'))
                         ->prefix('R$')
                         ->numeric()
                         ->disabled(),
-                    Forms\Components\Radio::make('tipo')
-                        ->inline()
-                        ->default('C')
+                        
+    
+                    Forms\Components\Select::make('tipo')
                         ->options([
                             'C' => 'Compra',
                             'V' => 'Venda',
-                        ]),
+                        ])
+                        ->required()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                            self::calcularResultado($get, $set);
+                        }),
+                    Forms\Components\TextInput::make('quantidade_disponivel')
+                        ->label('Qtd Disponível')
+                        ->disabled(),
+                    Forms\Components\TextInput::make('preco_medio_atual')
+                        ->label('Preço Médio')
+                        ->disabled()
+                        ->prefix('R$'),
+                    Forms\Components\TextInput::make('resultado')
+                        ->label('Resultado da Venda')
+                        ->disabled()
+                        ->reactive(),
+                        ])
 
-                ])
-                ->columns(3),
-                Forms\Components\TextInput::make('obs')
-                ->label('Observação')
-                ->columnSpan(3),
+                        ->columns(3),
+                    
+                    Forms\Components\TextInput::make('obs')
+                        ->label('Observação')
+                        ->columnSpan(3),
             ]);
     }
     public static function table(Table $table): Table
@@ -188,11 +239,28 @@ class OperacaoResource extends Resource
             'edit' => Pages\EditOperacao::route('/{record}/edit'),
         ];
     }
-    /*public static function getEloquentQuery(): Builder
+    protected static function calcularResultado(callable $get, callable $set)
     {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }*/
+        // Verifica se é uma operação de venda
+        if ($get('tipo') === 'V') {
+            $qtd = $get('qtd');
+            $valorUnitario = $get('valor_unitario');
+            $precoMedioAtual = $get('preco_medio_atual');
+
+            // Calcula o valor total
+            $valorTotal = $qtd * $valorUnitario;
+            $set('valor_total', $valorTotal);
+
+            // Calcula o resultado da venda
+            if ($precoMedioAtual) {
+                $resultado = ($valorUnitario - $precoMedioAtual) * $qtd;
+                $set('resultado', $resultado);
+            } else {
+                $set('resultado', 0);
+            }
+        } else {
+            // Se não for uma venda, limpa o resultado
+            $set('resultado', null);
+        }
+    }
 }
