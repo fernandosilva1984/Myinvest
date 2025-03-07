@@ -12,7 +12,7 @@ php artisan serve
 
 // acessando o projeto no navegador
 
-
+   
 http://localhost:8000
 
 // acessando o codigo do projeto no VSCode
