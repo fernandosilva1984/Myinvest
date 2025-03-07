@@ -21,7 +21,7 @@ class PosicaoResource extends Resource
 {
     protected static ?string $model = Carteira::class;
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar-square';
-    protected static ?string $navigationLabel = 'Posição carteiras';
+    protected static ?string $navigationLabel = 'Resumo de Invest.';
 
     
     public static function table(Table $table): Table
