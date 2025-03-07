@@ -13,5 +13,5 @@ jobs:
       with:
         server: ftp.meusinvestimentos.online
         username: fernandosilva1984@meusinvestimentos.online
-        password: VYy,U[D2d#d.
+        password: 'VYy,U[D2d#d.'
         server-dir: public_html
