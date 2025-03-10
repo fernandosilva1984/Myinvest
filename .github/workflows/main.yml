@@ -13,5 +13,6 @@ jobs:
       with:
         server: ftp.meusinvestimentos.online
         username: fernandosilva1984@meusinvestimentos.online
-        password: Sw0rdfish!
+        password: vIl9vL0?#YAE
+        remote-dir: /
         
